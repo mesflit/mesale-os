@@ -14,5 +14,4 @@
 .workspace-background { border-radius: 24px; }
 
 .popup-menu-content, .osd-window, .modal-dialog { background-color: rgba(16,24,48,0.62); border: 1px solid rgba(190,210,255,0.16); }
-.quick-toggle, .quick-menu-toggle { background-color: rgba(190,210,255,0.12); }
 .message, .notification-banner { background-color: rgba(190,210,255,0.10); }
