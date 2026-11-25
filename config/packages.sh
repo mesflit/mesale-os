@@ -7,7 +7,8 @@ CORE="systemd-sysv dbus dbus-user-session libpam-systemd locales tzdata console-
 NETWORK="iproute2 iputils-ping wpasupplicant wireless-regdb network-manager
   systemd-resolved systemd-timesyncd libnss-resolve libnss-myhostname"
 
-KERNEL="linux-image-amd64 linux-headers-amd64 initramfs-tools zstd dkms build-essential"
+# Compilers and headers stay off the ISO: the driver features pull them in through DKMS.
+KERNEL="linux-image-amd64 initramfs-tools zstd"
 
 FIRMWARE="firmware-linux-free firmware-misc-nonfree firmware-amd-graphics
   firmware-intel-graphics firmware-iwlwifi firmware-realtek firmware-mediatek

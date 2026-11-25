@@ -1,8 +1,10 @@
 # Stage 3: squashfs and a hybrid ISO (BIOS, UEFI, Secure Boot).
+# The initrd already sits next to the squashfs; the installer generates a new one.
 make_squashfs() {
   say "squashfs"
   mksquashfs "$ROOT" "$1/live/filesystem.squashfs" -comp zstd \
-    -Xcompression-level "${ZSTD:-15}" -b 1M -noappend -no-progress -mem 2G
+    -Xcompression-level "${ZSTD:-15}" -b 1M -noappend -no-progress -mem 2G \
+    -wildcards -e 'boot/initrd.img-*'
 }
 
 # Signed shim and GRUB come from the Debian image itself. gcdx64 finds the ISO by /.disk/info.

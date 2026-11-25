@@ -1,10 +1,10 @@
-<img src="https://mesflit.github.io/meselaos/img/mesale-logo.svg" width="88" align="right" alt="">
+<img src="https://mesflit.github.io/mesaleos/img/mesale-logo.svg" width="88" align="right" alt="">
 
 # Mesale OS
 
 A Linux desktop you assemble yourself: a Debian base with the newest kernel, drivers and GNOME.
 
-**Website:** https://mesflit.github.io/meselaos  ·  **Builds:** [Releases](https://github.com/mesflit/meselaos/releases)
+**Website:** https://mesflit.github.io/mesaleos  ·  **Builds:** [Releases](https://github.com/mesflit/mesaleos/releases)
 
 > In development. GNOME and the libraries it needs come from Debian testing. Try it in a virtual machine first.
 
@@ -19,7 +19,7 @@ A Linux desktop you assemble yourself: a Debian base with the newest kernel, dri
 ## Try it
 
 ```sh
-git clone https://github.com/mesflit/meselaos && cd meselaos
+git clone https://github.com/mesflit/mesaleos && cd mesaleos
 nix run
 ```
 

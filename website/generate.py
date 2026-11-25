@@ -6,7 +6,7 @@ import json
 import pathlib
 import re
 
-REPO = "https://github.com/mesflit/meselaos"
+REPO = "https://github.com/mesflit/mesaleos"
 GROUPS = {"apps": "Applications", "system": "System", "drivers": "Drivers", "terminal": "Terminal",
           "gaming": "Gaming", "development": "Development", "more": "More apps"}
 SCREENSHOTS = {"desktop": "The desktop", "command-bar": "Command bar", "center": "Mesale Center",

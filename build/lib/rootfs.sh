@@ -9,6 +9,11 @@ copy_repo() {
   cp -r --no-preserve=all "$MESALE_REPO" "$ROOT/usr/share/mesale/repo"
 }
 
+# Files nobody needs. The same rules keep applying on the installed system.
+slim_dpkg() {
+  install -Dm644 config/dpkg-slim.conf "$ROOT/etc/dpkg/dpkg.cfg.d/mesale-slim"
+}
+
 preseed() {
   printf 'en_US.UTF-8 UTF-8\n' >"$ROOT/etc/locale.gen"
   in_chroot "$ROOT" debconf-set-selections <<'EOF'
@@ -43,6 +48,7 @@ install_system() {
   printf '#!/bin/sh\nexit 101\n' >"$ROOT/usr/sbin/policy-rc.d" # no services in the chroot
   chmod 755 "$ROOT/usr/sbin/policy-rc.d"
   cp -r --no-preserve=all packages/mesale-base/etc/apt/. "$ROOT/etc/apt/"
+  slim_dpkg
   copy_repo
   in_chroot "$ROOT" apt-get -q update
   preseed
@@ -90,7 +96,9 @@ clean_system() {
 build_rootfs() {
   if [ "$STAGE" = iso ] && [ -e "$ROOT.ok" ]; then refresh_system; else install_system; fi
   in_chroot "$ROOT" /usr/lib/mesale/installer-options
+  echo COMPRESSLEVEL=19 >"$ROOT/etc/initramfs-tools/conf.d/mesale-live"
   in_chroot "$ROOT" update-initramfs -u -k all
+  rm "$ROOT/etc/initramfs-tools/conf.d/mesale-live"
   write_manifest
   make_bios_core
   clean_system

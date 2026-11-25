@@ -14,7 +14,7 @@ strings:
   versionedName: "Mesale OS @VERSION@ (@CODENAME@)"
   shortVersionedName: "Mesale @VERSION@"
   bootloaderEntryName: "Mesale OS"
-  productUrl: "https://mesflit.github.io/meselaos"
+  productUrl: "https://mesflit.github.io/mesaleos"
 images:
   productLogo: "/usr/share/pixmaps/mesale-logo.png"
   productIcon: "/usr/share/pixmaps/mesale-logo.png"

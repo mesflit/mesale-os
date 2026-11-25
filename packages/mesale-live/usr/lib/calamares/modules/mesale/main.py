@@ -26,6 +26,9 @@ def run():
     d = root + "/run/systemd/resolve"; os.makedirs(d, exist_ok=True)
     with open("/etc/resolv.conf") as a, open(d + "/stub-resolv.conf", "w") as b: b.write(a.read())
 
+    # The squashfs carries no initrd; package triggers below expect one.
+    ch("update-initramfs", "-c", "-k", "all")
+
     status = "Removing live packages"; libcalamares.job.setprogress(0.02)
     ch("apt-mark", "manual", "cryptsetup-initramfs", "cryptsetup", "btrfs-progs", "xfsprogs", "dosfstools", "e2fsprogs", "efibootmgr", "sudo", "pciutils", "mesale-desktop", "xwayland")
     if ch("apt-get", "-y", "purge", "--autoremove", *[p for p in LIVE if has(p)]) != 0:

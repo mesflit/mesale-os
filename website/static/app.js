@@ -1,6 +1,6 @@
 import {calculate} from './calculator.js';
 
-const REPO = 'mesflit/meselaos';
+const REPO = 'mesflit/mesaleos';
 const $ = id => document.getElementById(id);
 
 // Command bar demo: the same calculator and feature list the OS uses
