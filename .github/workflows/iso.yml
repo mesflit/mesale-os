@@ -30,9 +30,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           printf 'Built from %s\n\n```\n%s\n```\n' "$GITHUB_SHA" "$(cat out/versions.txt)" >notes.md
-          gh release delete dev --yes --cleanup-tag || true
-          gh release create dev --prerelease --target "$GITHUB_SHA" --title "Mesale OS (development build)" \
-            --notes-file notes.md out/*.iso out/*.sha256 out/versions.txt out/packages.txt
+          # Update in place and retry, so a GitHub hiccup never leaves the site without a download.
+          retry() { for wait in 10 30 60 120 0; do "$@" && return; sleep "$wait"; done; return 1; }
+          if ! gh release view dev >/dev/null 2>&1; then
+            retry gh release create dev --prerelease --target "$GITHUB_SHA" --title "Mesale OS (development build)" --notes-file notes.md
+          fi
+          retry gh release upload dev --clobber out/*.iso out/*.sha256 out/versions.txt out/packages.txt
+          retry gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/dev" -f sha="$GITHUB_SHA" -F force=true
+          retry gh release edit dev --prerelease --notes-file notes.md
       - uses: actions/upload-artifact@v4
         if: always()
         with:
