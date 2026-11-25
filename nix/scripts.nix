@@ -24,6 +24,7 @@
   qemu_kvm,
   gh,
   git,
+  gnupg,
   cacert,
   debian-archive-keyring,
   OVMF,
@@ -74,6 +75,19 @@ in
         DEBIAN_KEYRING = "${debian-archive-keyring}/share/keyrings/debian-archive-keyring.gpg";
         SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
       };
+
+  # Copy the packages to DIR and sign them with the key in APT_SIGNING_KEY.
+  sign-repo = command "mesale-sign-repo" "tools/sign-repo.sh" [
+    gnupg
+    coreutils
+  ] { MESALE_REPO = "${debs}"; };
+
+  create-signing-key = command "mesale-create-signing-key" "tools/create-signing-key.sh" [
+    gnupg
+    gh
+    git
+    coreutils
+  ] { };
 
   vm = command "mesale-vm" "tools/vm.sh" [
     qemu_kvm

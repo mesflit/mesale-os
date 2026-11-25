@@ -1,0 +1,5 @@
+# Updates for the Mesale OS packages
+Types: deb
+URIs: https://mesflit.github.io/mesaleos/apt/
+Suites: ./
+Signed-By: /usr/share/keyrings/mesale-archive.asc

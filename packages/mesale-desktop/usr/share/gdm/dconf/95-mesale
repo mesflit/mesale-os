@@ -6,3 +6,6 @@ font-name='Inter 11'
 cursor-theme='Bibata-Modern-Ice'
 accent-color='blue'
 color-scheme='prefer-dark'
+
+[org/gnome/shell]
+enabled-extensions=['mesale-greeter@mesale']

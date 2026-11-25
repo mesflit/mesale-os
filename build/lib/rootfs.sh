@@ -9,6 +9,12 @@ copy_repo() {
   cp -r --no-preserve=all "$MESALE_REPO" "$ROOT/usr/share/mesale/repo"
 }
 
+# Index only the repository on the image.
+update_local() {
+  in_chroot "$ROOT" apt-get -q update -o Dir::Etc::sourceparts=- \
+    -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/mesale-local.list
+}
+
 # Files nobody needs. The same rules keep applying on the installed system.
 slim_dpkg() {
   install -Dm644 config/dpkg-slim.conf "$ROOT/etc/dpkg/dpkg.cfg.d/mesale-slim"
@@ -48,6 +54,7 @@ install_system() {
   printf '#!/bin/sh\nexit 101\n' >"$ROOT/usr/sbin/policy-rc.d" # no services in the chroot
   chmod 755 "$ROOT/usr/sbin/policy-rc.d"
   cp -r --no-preserve=all packages/mesale-base/etc/apt/. "$ROOT/etc/apt/"
+  rm "$ROOT/etc/apt/sources.list.d/mesale.sources" # images use the packages built with them
   slim_dpkg
   copy_repo
   in_chroot "$ROOT" apt-get -q update
@@ -68,7 +75,7 @@ refresh_system() {
   say "Refreshing Mesale packages"
   mount_chroot "$ROOT"
   copy_repo
-  in_chroot "$ROOT" apt-get -q update
+  update_local
   apt_install --reinstall mesale-base mesale-desktop mesale-live
 }
 
@@ -84,8 +91,7 @@ clean_system() {
   in_chroot "$ROOT" apt-get clean
   # Keep only the local repository index: offline features install from it.
   rm -rf "$ROOT"/var/lib/apt/lists/*
-  in_chroot "$ROOT" apt-get -q update -o Dir::Etc::sourceparts=- \
-    -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/mesale-local.list
+  update_local
   umount_chroot "$ROOT"
   rm -f "$ROOT/etc/resolv.conf" "$ROOT/etc/hostname" "$ROOT"/var/log/*.log "$ROOT"/var/log/apt/*
   rm -rf "$ROOT"/tmp/* "$ROOT"/run/* "$ROOT"/root/.cache

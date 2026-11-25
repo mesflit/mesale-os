@@ -43,6 +43,12 @@ after() { ...; }         # optional: after apt
 
 `GROUP=apps` means preinstalled on the ISO and removed when unchecked. `GROUP=system` must install offline: list its dependencies in `OFFLINE_FEATURES`.
 
+## Updates
+
+Every push that touches `packages/` publishes a signed apt repository at `https://mesflit.github.io/mesaleos/apt/`. Installed systems get it through `mesale.sources`. Versions come from the commit date, so they always increase.
+
+The maintainer creates the key once with `nix run .#create-signing-key`. The private key lives only with the maintainer and in the `APT_SIGNING_KEY` secret. Never commit it, and never create or replace it without being asked. Without a key, builds work and simply have no update source.
+
 ## Things that break easily
 
 - `GRUB_DISTRIBUTOR` must start with `debian` and `efiBootloaderId` must be `debian`. The signed GRUB only looks in `/EFI/debian`.

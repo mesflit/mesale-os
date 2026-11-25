@@ -1,0 +1,2 @@
+{ "uuid": "mesale-greeter@mesale", "name": "Mesale Greeter", "description": "Cloud background for the login screen",
+  "shell-version": ["50", "51"], "session-modes": ["gdm"], "version": 1 }

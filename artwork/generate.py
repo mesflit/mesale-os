@@ -8,7 +8,7 @@ import pathlib
 import subprocess
 import sys
 
-from PIL import Image
+from PIL import Image, ImageFilter
 
 import logo
 from clouds import render
@@ -42,6 +42,9 @@ def wallpapers():
         if key == "night":
             dimmed = image.resize((1920, 1080), Image.LANCZOS).point(lambda p: int(p * .55))
             dimmed.save(SHARE / "mesale/grub.png")
+            # Login screen: already blurred, so it costs nothing to draw
+            greeter = image.resize((1920, 1080), Image.LANCZOS).filter(ImageFilter.GaussianBlur(14))
+            greeter.save(SHARE / "mesale/greeter.jpg", quality=92)
         entries.append(
             f'<wallpaper deleted="false"><name>{look.name}</name>'
             f'<filename>/usr/share/backgrounds/mesale/{key}.jpg</filename><options>zoom</options>'

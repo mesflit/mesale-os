@@ -36,6 +36,12 @@ runCommand "mesale-repo"
     cp -r --no-preserve=all ${artwork}/. pkg/mesale-base/
     install -Dm644 ${../vendor/flathub.flatpakrepo} pkg/mesale-base/etc/flatpak/remotes.d/flathub.flatpakrepo
     install -Dm644 ${../vendor/nvidia-cuda.asc} pkg/mesale-base/usr/share/mesale/nvidia-cuda.asc
+    # Updates need the archive key (nix run .#create-signing-key)
+    if [ -e ${../vendor}/mesale-archive.asc ]; then
+      install -Dm644 ${../vendor}/mesale-archive.asc pkg/mesale-base/usr/share/keyrings/mesale-archive.asc
+    else
+      rm pkg/mesale-base/etc/apt/sources.list.d/mesale.sources
+    fi
     install -m644 ${linuwu-sense}/src/linuwu_sense.c ${linuwu-sense}/LICENSE pkg/mesale-nitro/usr/src/linuwu-sense-1.0/
 
     grep -rlE '@(BUILD|VERSION|CODENAME)@' pkg | xargs sed -i \
@@ -57,5 +63,6 @@ runCommand "mesale-repo"
     cd $out
     apt-ftparchive packages . >Packages
     gzip -nk Packages
-    apt-ftparchive release . >Release
+    apt-ftparchive release -o APT::FTPArchive::Release::Origin=Mesale \
+      -o APT::FTPArchive::Release::Label=Mesale -o APT::FTPArchive::Release::Suite=stable . >Release
   ''

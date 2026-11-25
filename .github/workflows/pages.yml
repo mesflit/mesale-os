@@ -2,7 +2,7 @@ name: Website
 on:
   push:
     branches: [main]
-    paths: ["website/**", "nix/**", "flake.*", "artwork/**", "config/**", "packages/mesale-base/usr/lib/mesale/features/**", ".github/workflows/pages.yml"]
+    paths: ["website/**", "nix/**", "flake.*", "artwork/**", "config/**", "packages/**", "vendor/**", "tools/sign-repo.sh", ".github/workflows/pages.yml"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,6 +19,15 @@ jobs:
       - uses: cachix/install-nix-action@v31
       - name: Build
         run: cp -rL --no-preserve=mode "$(nix build --no-link --print-out-paths .#website)" site
+      - name: Publish the apt repository
+        env:
+          APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
+        run: |
+          if [ -n "$APT_SIGNING_KEY" ]; then
+            nix run .#sign-repo -- site/apt
+          else
+            echo "::warning::APT_SIGNING_KEY is not set, skipping the apt repository"
+          fi
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

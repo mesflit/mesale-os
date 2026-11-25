@@ -27,7 +27,7 @@ DESKTOP_EXTRA="xdg-desktop-portal-gtk gnome-bluetooth-sendto libpam-gnome-keyrin
 GNOME="gnome-shell gnome-session gdm3 gnome-control-center gnome-settings-daemon
   mutter-common xwayland nautilus ptyxis gnome-text-editor loupe papers showtime
   gnome-calculator gnome-calendar gnome-system-monitor gnome-disk-utility
-  gnome-software gnome-software-plugin-flatpak xdg-desktop-portal-gnome
+  gnome-software gnome-software-plugin-flatpak gnome-software-plugin-deb xdg-desktop-portal-gnome
   gnome-shell-extension-dash-to-panel gnome-shell-extension-blur-my-shell
   gnome-shell-extension-tiling-assistant gnome-shell-extension-appindicator
   adwaita-icon-theme gir1.2-adw-1 gstreamer1.0-plugins-good
@@ -38,7 +38,7 @@ GNOME="gnome-shell gnome-session gdm3 gnome-control-center gnome-settings-daemon
 # Preinstalled applications. Each one can be unchecked in the installer.
 APPS="firefox-esr gnome-text-editor loupe papers showtime gnome-calculator
   gnome-calendar gnome-system-monitor gnome-disk-utility file-roller
-  gnome-software gnome-software-plugin-flatpak"
+  gnome-software gnome-software-plugin-flatpak gnome-software-plugin-deb"
 
 # Dependencies of the features that must install without a network.
 OFFLINE_FEATURES="systemd-zram-generator irqbalance systemd-oomd ufw apparmor"

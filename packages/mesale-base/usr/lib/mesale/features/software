@@ -1,4 +1,4 @@
 GROUP=apps
 NAME="Software"
 DESC="App store and updates"
-PKGS="gnome-software gnome-software-plugin-flatpak"
+PKGS="gnome-software gnome-software-plugin-flatpak gnome-software-plugin-deb"

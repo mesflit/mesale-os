@@ -1,0 +1,5 @@
+#lockDialogGroup { background-image: url("file:///usr/share/mesale/greeter.jpg"); background-size: cover; background-color: #0b1430; }
+.login-dialog { background-color: transparent; }
+.login-dialog-user-list-item { border-radius: 24px; background-color: rgba(255,255,255,0.16); }
+.login-dialog-user-list-item:hover, .login-dialog-user-list-item:focus { background-color: rgba(255,255,255,0.28); }
+.login-dialog-prompt-entry { border-radius: 18px; background-color: rgba(255,255,255,0.20); }

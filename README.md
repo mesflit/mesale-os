@@ -47,6 +47,6 @@ nix run
 | `config/` | Version, package sets, ISO boot menu |
 | `nix/` | Derivations and commands |
 | `website/` | Website source |
-| `vendor/` | Third-party keys |
+| `vendor/` | Archive keys and repository definitions |
 
 Contributors and coding agents: read [AGENTS.md](AGENTS.md).
