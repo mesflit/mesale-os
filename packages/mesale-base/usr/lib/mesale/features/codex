@@ -1,0 +1,7 @@
+GROUP=development
+NAME="Codex"
+DESC="AI coding agent"
+NET=1
+PKGS="nodejs npm git"
+after() { npm install -g @openai/codex; }
+BIN=codex

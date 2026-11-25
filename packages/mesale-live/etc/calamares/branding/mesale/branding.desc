@@ -1,0 +1,28 @@
+componentName: mesale
+welcomeStyleCalamares: false
+welcomeExpandingLogo: true
+windowExpanding: normal
+windowSize: 1040px,680px
+windowPlacement: center
+sidebar: widget
+navigation: widget
+strings:
+  productName: "Mesale OS"
+  shortProductName: "Mesale"
+  version: "@SURUMKISA@"
+  shortVersion: "@SURUMKISA@"
+  versionedName: "Mesale OS @SURUMKISA@ (@KODAD@)"
+  shortVersionedName: "Mesale @SURUMKISA@"
+  bootloaderEntryName: "Mesale OS"
+  productUrl: "https://github.com/mesflit"
+images:
+  productLogo: "/usr/share/pixmaps/mesale-logo.png"
+  productIcon: "/usr/share/pixmaps/mesale-logo.png"
+  productWelcome: "/usr/share/mesale/previews/day.png"
+style:
+  SidebarBackground: "#dfeefb"
+  SidebarText: "#2c4468"
+  SidebarTextCurrent: "#ffffff"
+  SidebarBackgroundCurrent: "#2f7fe0"
+slideshow: "show.qml"
+slideshowAPI: 2

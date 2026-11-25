@@ -1,0 +1,53 @@
+name: ISO
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["**.md", "vm.sh"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: iso
+  cancel-in-progress: true
+jobs:
+  iso:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    container:
+      image: debian:trixie
+      options: --privileged
+    steps:
+      - name: Araçlar
+        run: |
+          apt-get update -q
+          apt-get install -qy --no-install-recommends git ca-certificates gh debootstrap debian-archive-keyring \
+            wget curl perl xz-utils zstd util-linux gpgv
+          df -h /
+      - uses: actions/checkout@v4
+      - name: Derle
+        env:
+          MESALE_BUILD: /build
+          DEBIAN_KEYRING: /usr/share/keyrings/debian-archive-keyring.gpg
+          ZSTD: "17"
+        shell: bash
+        run: |
+          set -o pipefail
+          bash build.sh 2>&1 | tee build.log | grep -vE '^(Get:|Selecting|Preparing|Unpacking|Setting up|\(Reading)'
+      - name: Yayınla (dev)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          cp /build/surumler.txt out/surumler.txt
+          printf 'Commit %s\n\n```\n%s\n```\n' "$GITHUB_SHA" "$(cat out/surumler.txt)" >notlar.md
+          gh release delete dev --yes --cleanup-tag 2>/dev/null || true
+          gh release create dev --prerelease --target "$GITHUB_SHA" --title "Mesale OS dev" --notes-file notlar.md \
+            out/*.iso out/*.sha256 out/paket-listesi.txt
+      - name: Günlük
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          retention-days: 7

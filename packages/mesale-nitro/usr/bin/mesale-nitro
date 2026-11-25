@@ -1,0 +1,15 @@
+#!/bin/bash
+# mesale-nitro [status | profile <name> | fan <auto|cpu,gpu> | charge <on|off>]
+set -euo pipefail
+D=/sys/devices/platform/acer-wmi/nitro_sense; PR=/sys/firmware/acpi/platform_profile; S=/var/lib/mesale-nitro
+put() { printf '%s' "$2" >"$D/$1"; mkdir -p $S; printf '%s' "$2" >"$S/$1"; echo "$1 = $2"; }
+[ -d $D ] || { echo "Linuwu-Sense is not loaded or this device is unsupported." >&2; exit 1; }
+c=${1:-status}; [ "$c" = status ] || [ "$(id -u)" -eq 0 ] || exec sudo "$0" "$@"
+case "$c" in
+  status) echo "Profile: $(cat $PR) ($(cat ${PR}_choices))"; echo "Fan: $(cat $D/fan_speed) (0,0 = auto)"; echo "80% limit: $(cat $D/battery_limiter)" ;;
+  profile) echo "$2" >$PR ;;
+  fan) if [ "$2" = auto ]; then put fan_speed 0,0; elif [[ "$2" =~ ^[0-9]{1,3},[0-9]{1,3}$ ]]; then put fan_speed "$2"; else exit 1; fi ;;
+  charge) if [ "$2" = on ]; then put battery_limiter 1; else put battery_limiter 0; fi ;;
+  restore) for a in fan_speed battery_limiter; do [ ! -f $S/$a ] || put $a "$(cat $S/$a)"; done ;;
+  *) sed -n 2p "$0"; exit 1 ;;
+esac

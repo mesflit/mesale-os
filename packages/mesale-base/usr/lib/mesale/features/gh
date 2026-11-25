@@ -1,0 +1,5 @@
+GROUP=development
+NAME="GitHub CLI"
+DESC="gh"
+NET=1
+PKGS="gh"

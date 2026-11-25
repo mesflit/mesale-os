@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="ProtonUp-Qt"
+DESC="Proton-GE manager"
+NET=1
+FLATPAKS="net.davidotek.pupgui2"

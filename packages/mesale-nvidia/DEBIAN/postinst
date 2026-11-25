@@ -1,0 +1,3 @@
+#!/bin/sh
+systemctl enable nvidia-suspend.service nvidia-resume.service nvidia-hibernate.service 2>/dev/null || true
+update-initramfs -u || true

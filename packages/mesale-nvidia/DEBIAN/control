@@ -1,0 +1,8 @@
+Package: mesale-nvidia
+Version: @SURUM@
+Architecture: all
+Maintainer: Mesale OS <mesale@localhost>
+Section: misc
+Priority: optional
+Depends: nvidia-open, nvidia-kernel-open-dkms, linux-headers-amd64, nvidia-driver
+Description: Mesale OS NVIDIA driver setup

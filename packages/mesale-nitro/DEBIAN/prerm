@@ -1,0 +1,2 @@
+#!/bin/sh
+dkms remove -m linuwu-sense -v 1.0 --all 2>/dev/null || true

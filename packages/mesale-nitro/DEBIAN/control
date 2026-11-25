@@ -1,0 +1,8 @@
+Package: mesale-nitro
+Version: @SURUM@
+Architecture: all
+Maintainer: Mesale OS <mesale@localhost>
+Section: misc
+Priority: optional
+Depends: dkms, linux-headers-amd64, kmod
+Description: Acer Nitro/Predator support (Linuwu-Sense, GPL-3)

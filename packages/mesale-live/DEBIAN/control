@@ -1,0 +1,8 @@
+Package: mesale-live
+Version: @SURUM@
+Architecture: all
+Maintainer: Mesale OS <mesale@localhost>
+Section: misc
+Priority: optional
+Depends: mesale-desktop, live-boot, live-config, live-config-systemd, calamares, x11-xserver-utils, xwayland, squashfs-tools, rsync, cryptsetup, cryptsetup-initramfs, btrfs-progs, xfsprogs, dosfstools, e2fsprogs, efibootmgr, parted, pciutils, python3-yaml, qml6-module-qtquick, qml6-module-qtquick-window, sudo, user-setup
+Description: Mesale OS live session and installer (removed after install)

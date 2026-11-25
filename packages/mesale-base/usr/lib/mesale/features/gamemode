@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="GameMode"
+DESC="Boost while gaming"
+NET=1
+PKGS="gamemode"

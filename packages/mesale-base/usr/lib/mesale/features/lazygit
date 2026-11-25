@@ -1,0 +1,5 @@
+GROUP=development
+NAME="lazygit"
+DESC="Git terminal UI"
+NET=1
+PKGS="lazygit"

@@ -1,0 +1,8 @@
+Package: mesale-privacy
+Version: @SURUM@
+Architecture: all
+Maintainer: Mesale OS <mesale@localhost>
+Section: misc
+Priority: optional
+Depends: systemd-resolved, network-manager
+Description: Mesale OS encrypted DNS and privacy

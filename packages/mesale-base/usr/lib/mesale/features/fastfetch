@@ -1,0 +1,5 @@
+GROUP=terminal
+NAME="fastfetch"
+DESC="System summary"
+NET=1
+PKGS="fastfetch"

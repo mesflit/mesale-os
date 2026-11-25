@@ -1,0 +1,11 @@
+PRETTY_NAME="Mesale OS @SURUMKISA@ (@KODAD@)"
+NAME="Mesale OS"
+VERSION_ID="@SURUMKISA@"
+VERSION="@SURUMKISA@ (@KODAD@)"
+VERSION_CODENAME=trixie
+DEBIAN_CODENAME=trixie
+ID=mesale
+ID_LIKE=debian
+LOGO=mesale-logo
+ANSI_COLOR="38;2;255;138;61"
+HOME_URL="https://github.com/mesflit"

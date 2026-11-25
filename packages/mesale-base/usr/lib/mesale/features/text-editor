@@ -1,0 +1,4 @@
+GROUP=apps
+NAME="Text Editor"
+DESC="GNOME text editor"
+PKGS="gnome-text-editor"

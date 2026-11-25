@@ -1,0 +1,5 @@
+GROUP=more
+NAME="Discord"
+DESC="Chat"
+NET=1
+FLATPAKS="com.discordapp.Discord"

@@ -1,0 +1,4 @@
+GROUP=apps
+NAME="Firefox"
+DESC="Web browser"
+PKGS="firefox-esr"

@@ -1,0 +1,8 @@
+Package: mesale-performance
+Version: @SURUM@
+Architecture: all
+Maintainer: Mesale OS <mesale@localhost>
+Section: misc
+Priority: optional
+Depends: systemd-zram-generator, irqbalance, systemd-oomd, power-profiles-daemon
+Description: Mesale OS performance tuning

@@ -1,0 +1,5 @@
+GROUP=development
+NAME="Godot"
+DESC="Game engine"
+NET=1
+FLATPAKS="org.godotengine.Godot"

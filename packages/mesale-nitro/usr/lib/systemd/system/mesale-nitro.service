@@ -1,0 +1,11 @@
+[Unit]
+Description=Restore Nitro settings
+After=systemd-modules-load.service
+ConditionPathExists=/sys/devices/platform/acer-wmi/nitro_sense
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+StateDirectory=mesale-nitro
+ExecStart=/usr/bin/mesale-nitro restore
+[Install]
+WantedBy=multi-user.target

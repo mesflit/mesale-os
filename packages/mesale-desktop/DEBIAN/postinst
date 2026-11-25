@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+dconf update
+# GRUB/plymouth görselleri
+[ -x /usr/sbin/plymouth-set-default-theme ] && plymouth-set-default-theme mesale || true
+update-alternatives --install /usr/share/images/desktop-base/desktop-grub.png desktop-grub /usr/share/mesale/grub.png 90 2>/dev/null || true

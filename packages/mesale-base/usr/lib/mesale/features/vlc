@@ -1,0 +1,5 @@
+GROUP=more
+NAME="VLC"
+DESC="Media player"
+NET=1
+PKGS="vlc"

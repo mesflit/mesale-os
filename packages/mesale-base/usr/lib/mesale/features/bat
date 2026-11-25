@@ -1,0 +1,5 @@
+GROUP=terminal
+NAME="bat"
+DESC="cat with colors"
+NET=1
+PKGS="bat"

@@ -1,0 +1,4 @@
+GROUP=apps
+NAME="Video Player"
+DESC="Showtime"
+PKGS="showtime"

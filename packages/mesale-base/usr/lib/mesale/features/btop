@@ -1,0 +1,5 @@
+GROUP=terminal
+NAME="btop"
+DESC="Resource monitor"
+NET=1
+PKGS="btop"

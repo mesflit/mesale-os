@@ -1,0 +1,5 @@
+GROUP=more
+NET=1
+NAME="Snapshots"
+DESC="Timeshift restore points (any file system)"
+PKGS="timeshift"

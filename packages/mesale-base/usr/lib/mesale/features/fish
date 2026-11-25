@@ -1,0 +1,5 @@
+GROUP=terminal
+NAME="Fish"
+DESC="fish only, becomes your login shell"
+NET=1
+PKGS="fish"

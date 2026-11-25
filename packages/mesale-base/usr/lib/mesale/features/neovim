@@ -1,0 +1,5 @@
+GROUP=development
+NAME="Neovim"
+DESC="Editor"
+NET=1
+PKGS="neovim"

@@ -1,0 +1,4 @@
+GROUP=apps
+NAME="Archive Manager"
+DESC="zip, tar, 7z"
+PKGS="file-roller"

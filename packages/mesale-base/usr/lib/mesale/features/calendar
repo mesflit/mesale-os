@@ -1,0 +1,4 @@
+GROUP=apps
+NAME="Calendar"
+DESC="GNOME calendar"
+PKGS="gnome-calendar"

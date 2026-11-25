@@ -1,0 +1,10 @@
+GROUP=drivers
+NAME="NVIDIA driver"
+DESC="Latest official driver (GTX 16 / RTX and newer)"
+NET=1
+PKGS="mesale-nvidia"
+prepare() {
+  install -Dm644 /usr/share/mesale/nvidia-cuda.asc /etc/apt/keyrings/nvidia-cuda.asc
+  printf "Types: deb\nURIs: https://developer.download.nvidia.com/compute/cuda/repos/debian13/x86_64/\nSuites: /\nSigned-By: /etc/apt/keyrings/nvidia-cuda.asc\n" >/etc/apt/sources.list.d/nvidia-cuda.sources
+}
+after() { /usr/lib/mesale/enroll-mok || true; }

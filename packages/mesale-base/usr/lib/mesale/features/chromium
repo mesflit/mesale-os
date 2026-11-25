@@ -1,0 +1,5 @@
+GROUP=more
+NAME="Chromium"
+DESC="Web browser"
+NET=1
+PKGS="chromium"

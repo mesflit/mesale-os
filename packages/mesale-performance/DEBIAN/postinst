@@ -1,0 +1,2 @@
+#!/bin/sh
+systemctl enable fstrim.timer irqbalance.service systemd-oomd.service 2>/dev/null || true

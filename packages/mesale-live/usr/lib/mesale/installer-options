@@ -1,0 +1,18 @@
+#!/usr/bin/python3
+"""Build the Calamares feature list. Only preinstalled apps and detected hardware are preselected."""
+import pathlib, re, subprocess, yaml
+pci = subprocess.run(["lspci", "-n"], capture_output=True, text=True).stdout.lower()
+def dmi(a):
+    try: return pathlib.Path("/sys/class/dmi/id", a).read_text().lower()
+    except OSError: return ""
+on = set()
+if any(int(m, 16) >= 0x1e00 for m in re.findall(r" 03\d\d: 10de:([0-9a-f]{4})", pci)): on.add("nvidia")  # Turing+
+if "acer" in dmi("sys_vendor") and any(x in dmi("product_name") for x in ("nitro", "predator")): on.add("nitro")
+G = {"system": ("System", "Works offline"), "apps": ("Applications", "Included, uncheck to leave out"), "drivers": ("Drivers", "Needs internet, detected automatically"),
+     "terminal": ("Terminal", "Needs internet, each installs only itself"), "gaming": ("Gaming", "Needs internet"), "development": ("Development", "Needs internet"), "more": ("More apps", "Needs internet")}
+L = {g: [] for g in G}
+for f in sorted(pathlib.Path("/usr/lib/mesale/features").iterdir()):
+    t = f.read_text(); k = lambda n: re.search(rf'^{n}="?([^"\n]*)', t, re.M)[1]
+    g = k("GROUP"); L[g].append({"name": f.name, "description": f'{k("NAME")}: {k("DESC")}', "selected": g == "apps" or f.name in on})
+out = [{"name": G[g][0], "description": G[g][1], "expanded": True, "selected": all(p["selected"] for p in ps), "packages": ps} for g, ps in L.items()]
+pathlib.Path("/etc/calamares/features.yaml").write_text(yaml.safe_dump(out, allow_unicode=True, sort_keys=False))

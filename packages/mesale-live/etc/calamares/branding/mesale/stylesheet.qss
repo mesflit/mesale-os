@@ -1,0 +1,17 @@
+QWidget { font-family: Inter; font-size: 11pt; }
+#mainApp { background: #f3f8fe; }
+QPushButton { padding: 9px 20px; border-radius: 12px; background: #dceaf8; color: #16243d; border: none; }
+QPushButton:hover { background: #c8def5; }
+QPushButton:disabled { background: #e9f1fa; color: #9fb2c9; }
+#view-button-next { background: #2f7fe0; color: white; }
+#view-button-next:hover { background: #2369c4; }
+#view-button-next:disabled { background: #b5d2f3; color: white; }
+QScrollArea, QScrollArea > QWidget > QWidget { background: #f3f8fe; }
+QLineEdit { padding: 7px 10px; border-radius: 10px; border: 1px solid #c3d6eb; background: white; color: #16243d; }
+QListView::item, QTreeView::item { padding: 6px; }
+QListView::item:selected { background: #2f7fe0; color: white; border-radius: 8px; }
+QProgressBar { border: none; border-radius: 8px; background: #dceaf8; text-align: center; }
+QProgressBar::chunk { background: #2f7fe0; border-radius: 8px; }
+#sidebarApp QPushButton { background: transparent; color: #2c4468; }
+#sidebarApp { background-color: #dfeefb; }
+QListView, QTreeView { border-radius: 12px; }

@@ -1,0 +1,5 @@
+GROUP=terminal
+NAME="tmux"
+DESC="Terminal multiplexer"
+NET=1
+PKGS="tmux"

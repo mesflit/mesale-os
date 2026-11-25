@@ -1,0 +1,6 @@
+GROUP=gaming
+NAME="MangoHud"
+DESC="FPS overlay"
+NET=1
+PKGS="mangohud"
+FLATPAKS="runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/25.08"

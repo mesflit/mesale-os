@@ -1,0 +1,8 @@
+Explanation: kernel, graphics and firmware from backports
+Package: src:linux src:linux-signed-amd64 src:linux-base src:mesa src:libdrm src:firmware-nonfree src:firmware-free src:amd64-microcode src:intel-microcode src:gamescope src:wireless-regdb
+Pin: release n=trixie-backports
+Pin-Priority: 900
+
+Package: *
+Pin: release n=forky
+Pin-Priority: 100

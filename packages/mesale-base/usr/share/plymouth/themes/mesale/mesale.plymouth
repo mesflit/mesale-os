@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Mesale
+Description=Mesale OS
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/mesale
+ScriptFile=/usr/share/plymouth/themes/mesale/mesale.script

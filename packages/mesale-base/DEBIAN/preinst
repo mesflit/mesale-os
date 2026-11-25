@@ -1,0 +1,3 @@
+#!/bin/sh
+set -e
+dpkg-divert --package mesale-base --rename --quiet --add --divert /usr/lib/os-release.debian /usr/lib/os-release

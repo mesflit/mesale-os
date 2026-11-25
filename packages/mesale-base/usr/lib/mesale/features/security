@@ -1,0 +1,4 @@
+GROUP=system
+NAME="Security"
+DESC="Firewall, kernel hardening, AppArmor"
+PKGS="mesale-security"

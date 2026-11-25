@@ -1,0 +1,4 @@
+GROUP=apps
+NAME="Document Viewer"
+DESC="Papers, PDF reader"
+PKGS="papers"

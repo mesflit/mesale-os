@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+dkms add -m linuwu-sense -v 1.0 2>/dev/null || true
+for k in /lib/modules/*/build; do
+  [ -e "$k" ] || continue
+  k=${k%/build}; dkms install -m linuwu-sense -v 1.0 -k "${k##*/}" || echo "linuwu-sense ${k##*/} build failed"
+done
+getent group nitro >/dev/null || groupadd --system nitro
+systemctl enable mesale-nitro.service 2>/dev/null || true

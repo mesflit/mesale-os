@@ -1,0 +1,8 @@
+Package: mesale-base
+Version: @SURUM@
+Architecture: all
+Maintainer: Mesale OS <mesale@localhost>
+Section: misc
+Priority: optional
+Depends: base-files, adduser, curl, ca-certificates, plymouth, polkitd, mokutil
+Description: Mesale OS base: identity, repositories, features

@@ -1,0 +1,10 @@
+GROUP=terminal
+NAME="Starship"
+DESC="Shell prompt"
+NET=1
+PKGS="starship"
+after() {
+  mkdir -p /etc/fish/conf.d
+  echo "status is-interactive; and starship init fish | source" >/etc/fish/conf.d/starship.fish
+  echo '[ -n "$BASH_VERSION" ] && case $- in *i*) eval "$(starship init bash)";; esac' >/etc/profile.d/starship.sh
+}

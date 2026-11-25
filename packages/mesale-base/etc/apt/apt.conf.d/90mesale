@@ -1,0 +1,2 @@
+Acquire::Retries "3";
+APT::Color "true";

@@ -1,0 +1,5 @@
+GROUP=development
+NAME="Git"
+DESC="Version control"
+NET=1
+PKGS="git"

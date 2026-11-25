@@ -1,0 +1,2 @@
+{ "policies": { "DisableTelemetry": true, "DisableFirefoxStudies": true, "DisablePocket": true, "DontCheckDefaultBrowser": true,
+  "EnableTrackingProtection": { "Value": true, "Locked": false, "Cryptomining": true, "Fingerprinting": true } } }

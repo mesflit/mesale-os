@@ -1,0 +1,11 @@
+[org/gnome/desktop/screensaver]
+lock-enabled=false
+[org/gnome/desktop/lockdown]
+disable-lock-screen=true
+[org/gnome/desktop/session]
+idle-delay=uint32 0
+[org/gnome/settings-daemon/plugins/power]
+sleep-inactive-ac-type='nothing'
+sleep-inactive-battery-type='nothing'
+[org/gnome/shell]
+favorite-apps=['mesale-install.desktop','org.gnome.Nautilus.desktop','firefox-esr.desktop','org.gnome.Ptyxis.desktop','mesale-center.desktop','org.gnome.Settings.desktop']

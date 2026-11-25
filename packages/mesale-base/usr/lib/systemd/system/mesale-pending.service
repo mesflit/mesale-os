@@ -1,0 +1,14 @@
+[Unit]
+Description=Mesale OS: install features queued by the installer
+ConditionPathExists=/var/lib/mesale/pending
+Wants=network-online.target
+After=network-online.target
+[Service]
+Type=oneshot
+Nice=19
+IOSchedulingClass=idle
+ExecStart=/bin/bash -c 'h=0; for f in $$(sort -u /var/lib/mesale/pending); do mesale-feature add "$$f" || h=1; done; [ $$h = 0 ] && rm /var/lib/mesale/pending'
+Restart=on-failure
+RestartSec=300
+[Install]
+WantedBy=multi-user.target

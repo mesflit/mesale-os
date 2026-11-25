@@ -1,0 +1,4 @@
+GROUP=system
+NAME="Performance"
+DESC="zram, BBR, latency-friendly kernel settings, oomd"
+PKGS="mesale-performance"

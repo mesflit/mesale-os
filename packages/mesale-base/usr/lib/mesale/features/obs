@@ -1,0 +1,5 @@
+GROUP=more
+NAME="OBS Studio"
+DESC="Recording and streaming"
+NET=1
+FLATPAKS="com.obsproject.Studio"

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Install Mesale OS
+Name[tr]=Mesale OS'u Kur
+Exec=mesale-install
+Icon=mesale-logo
+Categories=System;
+Keywords=install;kur;calamares;

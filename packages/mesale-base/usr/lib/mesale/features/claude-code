@@ -1,0 +1,7 @@
+GROUP=development
+NAME="Claude Code"
+DESC="AI coding agent"
+NET=1
+PKGS="nodejs npm git"
+after() { npm install -g @anthropic-ai/claude-code; }
+BIN=claude

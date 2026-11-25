@@ -1,0 +1,5 @@
+GROUP=more
+NAME="LibreOffice"
+DESC="Office suite"
+NET=1
+FLATPAKS="org.libreoffice.LibreOffice"

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.mesale.shell" path="/org/mesale/shell/">
+    <key name="theme-mode" type="s"><choices><choice value="light"/><choice value="dark"/><choice value="auto"/></choices><default>'light'</default><summary>Light, dark or auto</summary></key>
+    <key name="command-bar" type="as"><default><![CDATA[['<Super>space']]]></default><summary>Command bar shortcut</summary></key>
+  </schema>
+</schemalist>

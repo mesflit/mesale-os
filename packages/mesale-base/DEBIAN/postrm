@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+if [ "$1" = remove ]; then
+  rm -f /usr/lib/os-release
+  dpkg-divert --package mesale-base --rename --quiet --remove /usr/lib/os-release
+fi

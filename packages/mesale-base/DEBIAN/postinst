@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+cp /usr/lib/mesale/os-release /usr/lib/os-release
+echo 'Mesale OS \n \l' > /etc/issue
+[ -e /usr/share/plymouth/themes/mesale/mesale.plymouth ] && plymouth-set-default-theme mesale || true

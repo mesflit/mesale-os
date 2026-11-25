@@ -1,0 +1,5 @@
+GROUP=terminal
+NAME="fd"
+DESC="Fast file finder"
+NET=1
+PKGS="fd-find"

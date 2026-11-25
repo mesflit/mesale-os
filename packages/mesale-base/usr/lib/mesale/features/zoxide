@@ -1,0 +1,6 @@
+GROUP=terminal
+NAME="zoxide"
+DESC="Smarter cd (z)"
+NET=1
+PKGS="zoxide"
+after() { mkdir -p /etc/fish/conf.d; echo "status is-interactive; and zoxide init fish | source" >/etc/fish/conf.d/zoxide.fish; }

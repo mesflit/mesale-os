@@ -1,0 +1,5 @@
+GROUP=more
+NAME="GIMP"
+DESC="Image editor"
+NET=1
+FLATPAKS="org.gimp.GIMP"

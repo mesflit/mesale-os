@@ -1,0 +1,4 @@
+GROUP=apps
+NAME="Image Viewer"
+DESC="Loupe"
+PKGS="loupe"

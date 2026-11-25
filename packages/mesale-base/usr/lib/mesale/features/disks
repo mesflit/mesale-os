@@ -1,0 +1,4 @@
+GROUP=apps
+NAME="Disks"
+DESC="Disk management"
+PKGS="gnome-disk-utility"

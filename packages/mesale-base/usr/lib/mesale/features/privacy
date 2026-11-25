@@ -1,0 +1,4 @@
+GROUP=system
+NAME="Privacy"
+DESC="Encrypted DNS, per-network MAC, IPv6 privacy"
+PKGS="mesale-privacy"

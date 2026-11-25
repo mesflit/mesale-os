@@ -1,0 +1,8 @@
+Package: mesale-security
+Version: @SURUM@
+Architecture: all
+Maintainer: Mesale OS <mesale@localhost>
+Section: misc
+Priority: optional
+Depends: ufw, apparmor, fwupd
+Description: Mesale OS security hardening

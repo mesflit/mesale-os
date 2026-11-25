@@ -1,0 +1,4 @@
+GROUP=apps
+NAME="Calculator"
+DESC="GNOME calculator"
+PKGS="gnome-calculator"

@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="Prism Launcher"
+DESC="Minecraft launcher"
+NET=1
+FLATPAKS="org.prismlauncher.PrismLauncher"

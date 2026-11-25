@@ -1,0 +1,6 @@
+#!/bin/bash
+# Secure Boot: queue the DKMS signing key. At next boot: Enroll MOK > Continue > Yes > password: mesale
+K=/var/lib/dkms/mok.pub
+mokutil --sb-state 2>/dev/null | grep -q enabled && [ -f $K ] || exit 0
+mokutil --test-key $K 2>/dev/null | grep -q 'already enrolled' && exit 0
+H=$(mktemp); mokutil --generate-hash=mesale >"$H"; mokutil --import $K --hash-file "$H"; rm -f "$H"
