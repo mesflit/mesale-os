@@ -53,7 +53,7 @@ main { display: grid; gap: clamp(88px, 12vw, 150px); padding-block: clamp(80px, 
 .look[aria-pressed="true"] img { outline: 3px solid var(--flame); outline-offset: 3px; }
 
 .shots h2 { margin-bottom: 32px; }
-.shots > div { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.shots > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .shots figure { margin: 0; }
 .shots figure:first-child { grid-column: 1 / -1; }
 .shots img { display: block; width: 100%; height: auto; border-radius: 20px; box-shadow: 0 24px 60px rgba(20, 50, 100, .18); }
