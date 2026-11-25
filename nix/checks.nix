@@ -6,10 +6,9 @@
   python3,
   artwork,
   debs,
-  website,
 }:
 {
-  inherit artwork debs website;
+  inherit artwork debs;
 
   shell = runCommand "check-shell" { nativeBuildInputs = [ shellcheck ]; } ''
     cd ${../.}

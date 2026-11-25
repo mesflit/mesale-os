@@ -7,6 +7,7 @@
   woff2,
   inter,
   artwork,
+  video,
 }:
 let
   release = callPackage ./release.nix { };
@@ -33,6 +34,7 @@ runCommand "mesale-website"
       magick "$s" -quality 88 $out/img/$(basename "$s" .png).webp
     done
     magick $out/img/day.webp -resize 1200x630^ -gravity center -extent 1200x630 -quality 85 $out/img/social.jpg
+    cp -r ${video} $out/video
     cp ${artwork}/usr/share/icons/hicolor/scalable/apps/mesale-{logo,flame}.svg $out/img/
     cp ${inter}/share/fonts/truetype/InterVariable.ttf inter.ttf
     woff2_compress inter.ttf

@@ -13,8 +13,9 @@ SCREENSHOTS = {"desktop": "The desktop", "command-bar": "Command bar", "center":
                "installer": "Installer", "dark": "Night look"}
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--film-features")
 for option in ("features", "looks", "screenshots", "version", "codename", "template"):
-    parser.add_argument(f"--{option}", required=True)
+    parser.add_argument(f"--{option}", default="")
 args = parser.parse_args()
 esc = html.escape
 
@@ -57,6 +58,13 @@ def screenshot_html():
                for k, title in SCREENSHOTS.items() if (pathlib.Path(args.screenshots) / f"{k}.png").exists()]
     return f'<section class="shots wrap" id="screenshots"><h2>What it looks like</h2><div>{"".join(figures)}</div></section>' if figures else ""
 
+
+if args.film_features:
+    # A sample for the film: the first features of every group
+    args.features = args.film_features
+    names = [name for items in features().values() for _, name, _ in items[:4]]
+    print(f"const FEATURES = {json.dumps(names[:28])};")
+    raise SystemExit
 
 groups = features()
 values = {

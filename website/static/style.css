@@ -90,3 +90,6 @@ footer p:last-child { display: flex; flex-wrap: wrap; gap: 24px; }
 }
 @media (max-width: 460px) { dl { grid-template-columns: 1fr; } .wrap { padding-inline: 18px; } }
 @media (prefers-reduced-motion: reduce) { *, html { transition: none !important; scroll-behavior: auto; } }
+
+.film h2 { margin-bottom: 32px; }
+.film video { display: block; width: 100%; height: auto; border-radius: 24px; background: #0b1430; box-shadow: 0 24px 60px rgba(20, 50, 100, .22); }

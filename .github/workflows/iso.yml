@@ -2,7 +2,7 @@ name: ISO
 on:
   push:
     branches: [main]
-    paths-ignore: ["**.md", "website/**", "nix/website.nix", "tools/**", ".github/workflows/pages.yml"]
+    paths-ignore: ["**.md", "website/**", "nix/website.nix", "nix/video.nix", "tools/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
 permissions:
   contents: write
