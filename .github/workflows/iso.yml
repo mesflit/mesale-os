@@ -2,7 +2,7 @@ name: ISO
 on:
   push:
     branches: [main]
-    paths-ignore: ["**.md", "vm.sh"]
+    paths-ignore: ["**.md", "website/**", "nix/website.nix", "tools/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
 permissions:
   contents: write
@@ -10,43 +10,31 @@ concurrency:
   group: iso
   cancel-in-progress: true
 jobs:
-  iso:
+  build:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
-    container:
-      image: debian:trixie
-      options: --privileged
     steps:
-      - name: Araçlar
-        run: |
-          apt-get update -q
-          apt-get install -qy --no-install-recommends git ca-certificates gh debootstrap debian-archive-keyring \
-            wget curl perl xz-utils zstd util-linux gpgv
-          df -h /
       - uses: actions/checkout@v4
-      - name: Derle
-        env:
-          MESALE_BUILD: /build
-          DEBIAN_KEYRING: /usr/share/keyrings/debian-archive-keyring.gpg
-          ZSTD: "17"
+      - uses: cachix/install-nix-action@v31
+      - name: Check
+        run: nix flake check -L
+      - name: Build
         shell: bash
         run: |
           set -o pipefail
-          bash build.sh 2>&1 | tee build.log | grep -vE '^(Get:|Selecting|Preparing|Unpacking|Setting up|\(Reading)'
-      - name: Yayınla (dev)
+          build=$(nix build --no-link --print-out-paths .#build)
+          sudo MESALE_BUILD=/mnt/mesale ZSTD=17 "$build/bin/mesale-build" 2>&1 | tee build.log |
+            grep -vE '^(Get:|Selecting|Preparing|Unpacking|Setting up|\(Reading)'
+      - name: Publish the dev release
         env:
           GH_TOKEN: ${{ github.token }}
-        shell: bash
         run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          cp /build/surumler.txt out/surumler.txt
-          printf 'Commit %s\n\n```\n%s\n```\n' "$GITHUB_SHA" "$(cat out/surumler.txt)" >notlar.md
-          gh release delete dev --yes --cleanup-tag 2>/dev/null || true
-          gh release create dev --prerelease --target "$GITHUB_SHA" --title "Mesale OS dev" --notes-file notlar.md \
-            out/*.iso out/*.sha256 out/paket-listesi.txt
-      - name: Günlük
+          printf 'Built from %s\n\n```\n%s\n```\n' "$GITHUB_SHA" "$(cat out/versions.txt)" >notes.md
+          gh release delete dev --yes --cleanup-tag || true
+          gh release create dev --prerelease --target "$GITHUB_SHA" --title "Mesale OS (development build)" \
+            --notes-file notes.md out/*.iso out/*.sha256 out/versions.txt out/packages.txt
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: actions/upload-artifact@v4
         with:
           name: build-log
           path: build.log

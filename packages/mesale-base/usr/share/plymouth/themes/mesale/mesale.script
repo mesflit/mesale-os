@@ -5,30 +5,30 @@ logo = Sprite(Image("logo.png"));
 li = Image("logo.png");
 logo.SetX(w / 2 - li.GetWidth() / 2);
 logo.SetY(h * 0.42 - li.GetHeight() / 2);
-ni = Image("nokta.png");
+ni = Image("dot.png");
 for (i = 0; i < 3; i++) {
   n[i] = Sprite(ni);
   n[i].SetX(w / 2 - 7 + (i - 1) * 30);
   n[i].SetY(h * 0.66);
 }
 t = 0;
-fun yenile() {
+fun refresh() {
   t++;
   for (i = 0; i < 3; i++) n[i].SetOpacity(0.3 + 0.7 * Math.Abs(Math.Sin(t * 0.06 - i * 0.6)));
 }
-Plymouth.SetRefreshFunction(yenile);
-soru = Sprite(); giris = Sprite();
-fun parola(yazi, adet) {
-  s = Image.Text(yazi, 0.9, 0.9, 1);
-  soru.SetImage(s); soru.SetX(w / 2 - s.GetWidth() / 2); soru.SetY(h * 0.74); soru.SetOpacity(1);
-  y = "";
-  for (i = 0; i < adet; i++) y += "* ";
-  g = Image.Text(y, 1, 0.54, 0.24);
-  giris.SetImage(g); giris.SetX(w / 2 - g.GetWidth() / 2); giris.SetY(h * 0.79); giris.SetOpacity(1);
+Plymouth.SetRefreshFunction(refresh);
+prompt = Sprite(); entry = Sprite();
+fun password(text, count) {
+  s = Image.Text(text, 0.9, 0.9, 1);
+  prompt.SetImage(s); prompt.SetX(w / 2 - s.GetWidth() / 2); prompt.SetY(h * 0.74); prompt.SetOpacity(1);
+  stars = "";
+  for (i = 0; i < count; i++) stars += "* ";
+  g = Image.Text(stars, 1, 0.54, 0.24);
+  entry.SetImage(g); entry.SetX(w / 2 - g.GetWidth() / 2); entry.SetY(h * 0.79); entry.SetOpacity(1);
 }
-fun normal() { soru.SetOpacity(0); giris.SetOpacity(0); }
-Plymouth.SetDisplayPasswordFunction(parola);
+fun normal() { prompt.SetOpacity(0); entry.SetOpacity(0); }
+Plymouth.SetDisplayPasswordFunction(password);
 Plymouth.SetDisplayNormalFunction(normal);
-msj = Sprite();
-fun mesaj(m) { i = Image.Text(m, 0.8, 0.8, 0.95); msj.SetImage(i); msj.SetX(w / 2 - i.GetWidth() / 2); msj.SetY(h * 0.9); }
-Plymouth.SetMessageFunction(mesaj);
+msg = Sprite();
+fun message(m) { i = Image.Text(m, 0.8, 0.8, 0.95); msg.SetImage(i); msg.SetX(w / 2 - i.GetWidth() / 2); msg.SetY(h * 0.9); }
+Plymouth.SetMessageFunction(message);

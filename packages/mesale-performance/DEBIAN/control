@@ -1,5 +1,5 @@
 Package: mesale-performance
-Version: @SURUM@
+Version: @BUILD@
 Architecture: all
 Maintainer: Mesale OS <mesale@localhost>
 Section: misc

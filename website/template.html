@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mesale OS</title>
+<meta name="description" content="A Linux desktop you assemble yourself: Debian base, newest kernel, drivers and GNOME.">
+<meta property="og:title" content="Mesale OS">
+<meta property="og:image" content="https://mesflit.github.io/meselaos/img/social.jpg">
+<link rel="icon" href="img/mesale-logo.svg">
+<link rel="preload" as="image" href="img/day.webp">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-look="day">
+<header class="hero">
+  <nav class="wrap" aria-label="Main">
+    <a class="brand" href="#"><img src="img/mesale-flame.svg" width="30" height="30" alt="">Mesale OS</a>
+    <span><a href="#features">Features</a><a href="#base">Base</a><a href="{{REPO}}">Source</a></span>
+  </nav>
+  <div class="wrap pitch">
+    <h1>A desktop as light as the sky it wears.</h1>
+    <p>Mesale OS pairs a Debian base with the newest kernel, drivers and GNOME. You choose every piece that gets installed.</p>
+    <p class="actions">
+      <a class="button" id="download" href="{{REPO}}/releases">Download the ISO</a>
+      <a class="button quiet" href="#features">Choose your features</a>
+    </p>
+    <p class="note" id="release">{{VERSION}} “{{CODENAME}}”, development build for 64-bit PCs.</p>
+  </div>
+  <div class="demo wrap">
+    <div class="command" role="search">
+      <ul id="results" aria-live="polite"></ul>
+      <input id="command" type="text" autocomplete="off" spellcheck="false" placeholder="Search, open, calculate…" aria-label="Try the command bar">
+    </div>
+    <p>This is the command bar. On Mesale OS, press <kbd>Super</kbd> <kbd>Space</kbd>. Here, type <button type="button" class="try">steam</button> or <button type="button" class="try">12*4</button>.</p>
+  </div>
+</header>
+<main>
+  <section class="wrap looks">
+    <div><h2>Five skies</h2><p>Every wallpaper is drawn by code in the repository. Pick one to see it on this page. In the installer it also sets light or dark.</p></div>
+    <div class="look-row">{{LOOKS}}</div>
+  </section>
+  {{SCREENSHOTS}}
+  <section class="wrap features" id="features">
+    <div class="intro"><h2>You pick all {{FEATURE_COUNT}} of them</h2><p>This is the installer's own list. Applications come included and can be unchecked. Nothing else is selected for you, except drivers the installer detects.</p></div>
+    <form id="picker">{{FEATURES}}</form>
+    <div class="output"><code id="line">mesale-feature add …</code><button type="button" class="button" id="copy">Copy command</button></div>
+  </section>
+  <section class="wrap base" id="base">
+    <h2>What it is made of</h2>
+    <dl>
+      <div><dt>Debian 13</dt><dd>The base system, with Debian's security updates.</dd></div>
+      <div><dt>Kernel, Mesa, firmware</dt><dd>From Debian backports. <span data-version="linux-image-amd64"></span></dd></div>
+      <div><dt>GNOME</dt><dd>From Debian testing, with the libraries it needs. <span data-version="gnome-shell"></span></dd></div>
+      <div><dt>NVIDIA</dt><dd>NVIDIA's own repository, for GTX 16, RTX and newer. Older cards use nouveau.</dd></div>
+      <div><dt>File system</dt><dd>ext4, btrfs or xfs, with optional encryption.</dd></div>
+      <div><dt>Nix</dt><dd>Artwork, packages, ISO tools and this page are built through one flake.</dd></div>
+    </dl>
+    <p class="caveat">Mesale OS is in development. GNOME and the libraries it pulls in come from Debian testing, so their security fixes can arrive later than in stable. Try it in a virtual machine first.</p>
+  </section>
+</main>
+<footer><div class="wrap">
+  <p><img src="img/mesale-flame.svg" width="40" height="40" alt=""></p>
+  <p>Mesale is short for <i>meşale</i>, Turkish for torch.</p>
+  <p><a href="{{REPO}}">Source on GitHub</a><a href="{{REPO}}/releases">All builds</a><a href="{{REPO}}/issues">Report a problem</a></p>
+</div></footer>
+<script type="application/json" id="search-data">{{SEARCH}}</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,58 +1,39 @@
 {
-  description = "Mesale OS — Debian stable tabanlı, en yeni kernel/sürücülü, cam görünümlü GNOME dağıtımı";
+  description = "Mesale OS: Debian base, newest kernel, drivers and GNOME";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
   outputs =
-    { nixpkgs, ... }:
+    { self, nixpkgs }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      inherit (pkgs) lib;
 
-      # Derleyicinin çekirdeği: Debian tabanını kurmaya yeten araçlar.
-      # Gerisi (xorriso, grub, squashfs...) Debian kutusunun İÇİNDEN gelir.
-      buildTools = with pkgs; [
-        debootstrap
-        dpkg
-        perl
-        wget
-        gnutar
-        zstd
-        xz
-        gzip
-        util-linux
-        coreutils
-        gnused
-        gnugrep
-        gawk
-        findutils
-        curl
-      ];
+      artwork = pkgs.callPackage ./nix/artwork.nix { };
+      debs = pkgs.callPackage ./nix/debs.nix {
+        inherit artwork;
+        buildId = self.lastModifiedDate or "19700101000000";
+      };
+      website = pkgs.callPackage ./nix/website.nix { inherit artwork; };
+      scripts = pkgs.callPackage ./nix/scripts.nix { inherit artwork debs; };
 
-      script =
-        name: file: deps:
-        pkgs.writeShellApplication {
-          inherit name;
-          runtimeInputs = deps;
-          checkPhase = "";
-          bashOptions = [ ];
-          text = ''
-            unset LD_LIBRARY_PATH LD_PRELOAD
-            export PATH="/run/wrappers/bin:$PATH" # newuidmap/newgidmap (setuid)
-            export DEBIAN_KEYRING=${pkgs.debian-archive-keyring}/share/keyrings/debian-archive-keyring.gpg
-            export OVMF_FD=${pkgs.OVMF.fd}/FV
-            exec bash ./${file} "$@"
-          '';
-        };
-      build = script "mesale-build" "build.sh" buildTools;
-      vm = script "mesale-vm" "vm.sh" [ pkgs.qemu_kvm pkgs.coreutils pkgs.gh pkgs.git ];
+      app = pkg: { type = "app"; program = lib.getExe pkg; meta.description = pkg.name; };
     in
     {
-      packages.${system} = { inherit build vm; };
-      apps.${system} = {
-        default = { type = "app"; program = "${vm}/bin/mesale-vm"; };
-        build = { type = "app"; program = "${build}/bin/mesale-build"; };
-        vm = { type = "app"; program = "${vm}/bin/mesale-vm"; };
+      packages.${system} = {
+        inherit artwork debs website;
+        inherit (scripts) build vm;
+        default = scripts.vm;
       };
+      apps.${system} = {
+        default = app scripts.vm;
+        vm = app scripts.vm;
+        build = app scripts.build;
+      };
+      checks.${system} = removeAttrs (pkgs.callPackage ./nix/checks.nix {
+        inherit artwork debs website;
+      }) [ "override" "overrideDerivation" ];
+      formatter.${system} = pkgs.nixfmt-rfc-style;
     };
 }

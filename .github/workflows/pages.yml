@@ -1,0 +1,29 @@
+name: Website
+on:
+  push:
+    branches: [main]
+    paths: ["website/**", "nix/**", "flake.*", "artwork/**", "config/**", "packages/mesale-base/usr/lib/mesale/features/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - name: Build
+        run: cp -rL --no-preserve=mode "$(nix build --no-link --print-out-paths .#website)" site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4

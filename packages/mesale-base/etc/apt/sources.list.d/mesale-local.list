@@ -1,2 +1,2 @@
 # Mesale OS packages
-deb [trusted=yes] file:/usr/share/mesale/depo ./
+deb [trusted=yes] file:/usr/share/mesale/repo ./

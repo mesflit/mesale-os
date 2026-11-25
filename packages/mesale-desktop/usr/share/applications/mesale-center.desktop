@@ -1,10 +1,9 @@
 [Desktop Entry]
 Type=Application
 Name=Mesale Center
-Name[tr]=Mesale Merkezi
 Comment=Look and features
 Exec=mesale-center
 Icon=mesale-logo
 Categories=Settings;GTK;
-Keywords=theme;wallpaper;features;apps;nvidia;tema;duvar;
+Keywords=theme;wallpaper;features;apps;nvidia;
 StartupWMClass=org.mesale.Center

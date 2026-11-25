@@ -9,12 +9,12 @@ navigation: widget
 strings:
   productName: "Mesale OS"
   shortProductName: "Mesale"
-  version: "@SURUMKISA@"
-  shortVersion: "@SURUMKISA@"
-  versionedName: "Mesale OS @SURUMKISA@ (@KODAD@)"
-  shortVersionedName: "Mesale @SURUMKISA@"
+  version: "@VERSION@"
+  shortVersion: "@VERSION@"
+  versionedName: "Mesale OS @VERSION@ (@CODENAME@)"
+  shortVersionedName: "Mesale @VERSION@"
   bootloaderEntryName: "Mesale OS"
-  productUrl: "https://github.com/mesflit"
+  productUrl: "https://mesflit.github.io/meselaos"
 images:
   productLogo: "/usr/share/pixmaps/mesale-logo.png"
   productIcon: "/usr/share/pixmaps/mesale-logo.png"

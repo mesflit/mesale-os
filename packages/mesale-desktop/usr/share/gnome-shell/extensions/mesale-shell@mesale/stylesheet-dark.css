@@ -1,12 +1,11 @@
-
-.mesale-komut { width: 640px; border-radius: 22px; padding: 10px; border-width: 1px; box-shadow: 0 6px 22px rgba(0,0,0,0.35); }
-.mesale-giris { font-size: 16px; border: none; border-radius: 14px; padding: 12px 14px; background-color: rgba(70,140,235,0.10); color: inherit; box-shadow: none; }
-.mesale-giris:focus { border: none; box-shadow: none; background-color: rgba(70,140,235,0.14); }
-.mesale-liste { padding-bottom: 8px; spacing: 2px; }
-.mesale-satir { border-radius: 14px; padding: 9px 12px; text-align: left; }
-.mesale-satir:hover { background-color: rgba(70,140,235,0.10); }
-.mesale-satir.secili { background-color: rgba(70,140,235,0.24); }
-.mesale-tur { font-size: 12px; opacity: 150; }
+.mesale-command { width: 640px; border-radius: 22px; padding: 10px; border-width: 1px; box-shadow: 0 6px 22px rgba(0,0,0,0.35); }
+.mesale-entry { font-size: 16px; border: none; border-radius: 14px; padding: 12px 14px; background-color: rgba(70,140,235,0.10); color: inherit; box-shadow: none; }
+.mesale-entry:focus { border: none; box-shadow: none; background-color: rgba(70,140,235,0.14); }
+.mesale-list { padding-bottom: 8px; spacing: 2px; }
+.mesale-row { border-radius: 14px; padding: 9px 12px; text-align: left; }
+.mesale-row:hover { background-color: rgba(70,140,235,0.10); }
+.mesale-row.selected { background-color: rgba(70,140,235,0.24); }
+.mesale-kind { font-size: 12px; opacity: 150; }
 .popup-menu-content, .candidate-popup-content { border-radius: 22px; }
 .quick-settings { border-radius: 26px; padding: 18px; }
 .quick-toggle, .quick-menu-toggle { border-radius: 16px; }
