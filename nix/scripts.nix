@@ -79,6 +79,7 @@ in
   # Copy the packages to DIR and sign them with the key in APT_SIGNING_KEY.
   sign-repo = command "mesale-sign-repo" "tools/sign-repo.sh" [
     gnupg
+    gawk
     coreutils
   ] { MESALE_REPO = "${debs}"; };
 
