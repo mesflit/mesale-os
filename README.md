@@ -50,3 +50,9 @@ nix run
 | `vendor/` | Archive keys and repository definitions |
 
 Contributors and coding agents: read [AGENTS.md](AGENTS.md).
+
+## License
+
+Copyright (C) 2026 Mesflit. Mesale OS is free software under the [GNU GPL, version 3 or later](LICENSE).
+
+Files in `vendor/` and the software on the ISO keep their own licenses. The NVIDIA driver is proprietary; it is never on the ISO and is downloaded from NVIDIA only if you select it.
