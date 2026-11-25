@@ -7,6 +7,7 @@ from gi.repository import Adw, Gdk, GdkPixbuf, Gio, Gtk
 import panel
 
 SHARE = "/usr/share/mesale"
+NIGHT = "file:///usr/share/backgrounds/mesale/night.jpg"
 MODES = ["light", "dark", "auto"]
 MONITORS = range(4)
 ACCENTS = {"blue": "#3f7de0", "teal": "#1f9aa0", "green": "#2f9e63", "yellow": "#d39b16", "orange": "#e9792f",
@@ -50,16 +51,17 @@ class LookPage(Adw.PreferencesPage):
             button = Gtk.ToggleButton(css_classes=["wallpaper", "flat"], group=first, child=picture,
                                       active=uri == current, tooltip_text=look["name"], overflow=Gtk.Overflow.HIDDEN)
             first = first or button
-            button.connect("toggled", self.set_wallpaper, uri)
+            button.connect("toggled", self.set_wallpaper, uri, look["dark"])
             grid.append(button)
         group = Adw.PreferencesGroup(title="Wallpaper")
         group.add(grid)
         return group
 
-    def set_wallpaper(self, button, uri):
+    def set_wallpaper(self, button, uri, dark):
         if button.get_active():
-            for key in ("picture-uri", "picture-uri-dark"):
-                self.background.set_string(key, uri)
+            # A light wallpaper turns into the night sky in dark style
+            self.background.set_string("picture-uri", uri)
+            self.background.set_string("picture-uri-dark", uri if dark else NIGHT)
             self.lock_screen.set_string("picture-uri", uri)
 
     def color_group(self):

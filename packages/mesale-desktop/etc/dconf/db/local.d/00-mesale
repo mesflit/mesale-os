@@ -16,7 +16,7 @@ show-battery-percentage=true
 
 [org/gnome/desktop/background]
 picture-uri='file:///usr/share/backgrounds/mesale/day.jpg'
-picture-uri-dark='file:///usr/share/backgrounds/mesale/day.jpg'
+picture-uri-dark='file:///usr/share/backgrounds/mesale/night.jpg'
 picture-options='zoom'
 
 [org/gnome/desktop/screensaver]

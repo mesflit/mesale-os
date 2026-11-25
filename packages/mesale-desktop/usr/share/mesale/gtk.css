@@ -1,0 +1,28 @@
+/* Sky tint for GTK 4 apps. One file for both styles: GTK reads it only at startup,
+   so the media queries are what lets running apps follow a style change. */
+@media (prefers-color-scheme: light) {
+  :root {
+    --window-bg-color: #f3f8fe;
+    --dialog-bg-color: #f3f8fe;
+    --headerbar-bg-color: #f3f8fe;
+    --headerbar-backdrop-color: #f3f8fe;
+    --view-bg-color: #fbfdff;
+    --popover-bg-color: #fbfdff;
+    --sidebar-bg-color: #e8f1fb;
+    --sidebar-backdrop-color: #e8f1fb;
+    --secondary-sidebar-bg-color: #eef5fc;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --window-bg-color: #141c33;
+    --dialog-bg-color: #141c33;
+    --headerbar-bg-color: #141c33;
+    --headerbar-backdrop-color: #141c33;
+    --view-bg-color: #10172b;
+    --popover-bg-color: #10172b;
+    --sidebar-bg-color: #1a2440;
+    --sidebar-backdrop-color: #1a2440;
+    --secondary-sidebar-bg-color: #172039;
+  }
+}

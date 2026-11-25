@@ -6,8 +6,8 @@ const PANEL_SCHEMA = 'org.gnome.shell.extensions.dash-to-panel';
 const DAY_STARTS = 7;
 const DAY_ENDS = 19;
 const PANEL_COLORS = {
-    light: {background: '#ffffff', border: 'rgba(255,255,255,0.55)'},
-    dark: {background: '#0f1730', border: 'rgba(190,210,255,0.16)'},
+    light: {background: '#ffffff', border: 'rgba(255,255,255,0.55)', opacity: 0.42},
+    dark: {background: '#0f1730', border: 'rgba(190,210,255,0.16)', opacity: 0.72},
 };
 
 export class ThemeManager {
@@ -25,6 +25,7 @@ export class ThemeManager {
                 this._applyMode();
             return GLib.SOURCE_CONTINUE;
         });
+        this._linkGtkCss();
         this._applyMode();
         this._applyColors();
     }
@@ -67,12 +68,20 @@ export class ThemeManager {
         const colors = light ? PANEL_COLORS.light : PANEL_COLORS.dark;
         this._panel?.set_string('trans-bg-color', colors.background);
         this._panel?.set_string('trans-border-custom-color', colors.border);
-        this._linkGtkCss(light);
+        this._applyOpacity(colors.opacity);
         this._onChange(light);
     }
 
+    // Dark needs a denser bar. An opacity the user picked is left alone.
+    _applyOpacity(opacity) {
+        const current = this._panel?.get_double('trans-panel-opacity');
+        const isDefault = Object.values(PANEL_COLORS).some(c => Math.abs(c.opacity - current) < 0.001);
+        if (isDefault && current !== opacity)
+            this._panel.set_double('trans-panel-opacity', opacity);
+    }
+
     // Never touches a gtk.css the user wrote: only replaces our own symlink.
-    _linkGtkCss(light) {
+    _linkGtkCss() {
         const dir = GLib.build_filenamev([GLib.get_user_config_dir(), 'gtk-4.0']);
         const link = Gio.File.new_for_path(`${dir}/gtk.css`);
         try {
@@ -82,7 +91,7 @@ export class ThemeManager {
                 link.delete(null);
             else if (type !== Gio.FileType.UNKNOWN)
                 return;
-            link.make_symbolic_link(`/usr/share/mesale/gtk-${light ? 'light' : 'dark'}.css`, null);
+            link.make_symbolic_link('/usr/share/mesale/gtk.css', null);
         } catch (e) {
             console.warn(`mesale-shell: ${e.message}`);
         }

@@ -39,9 +39,10 @@ def run():
     if look in walls:
         dark = walls[look]["dark"]
         uri = f"'file:///usr/share/backgrounds/mesale/{look}.jpg'"
+        dark_uri = uri if dark else "'file:///usr/share/backgrounds/mesale/night.jpg'"
         with open(root + "/etc/dconf/db/local.d/90-install", "w") as f:
             f.write(f"[org/mesale/shell]\ntheme-mode='{'dark' if dark else 'light'}'\n\n[org/gnome/desktop/interface]\ncolor-scheme='prefer-{'dark' if dark else 'light'}'\n\n"
-                    f"[org/gnome/desktop/background]\npicture-uri={uri}\npicture-uri-dark={uri}\n\n[org/gnome/desktop/screensaver]\npicture-uri={uri}\n")
+                    f"[org/gnome/desktop/background]\npicture-uri={uri}\npicture-uri-dark={dark_uri}\n\n[org/gnome/desktop/screensaver]\npicture-uri={uri}\n")
         ch("dconf", "update")
 
     chosen = set()
