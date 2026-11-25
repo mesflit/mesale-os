@@ -69,6 +69,8 @@ class LookPage(Adw.PreferencesPage):
         theme = Adw.ComboRow(title="Theme", subtitle="Auto is light from 07 to 19",
                              model=Gtk.StringList.new(["Light", "Dark", "Auto"]))
         theme.set_selected(MODES.index(self.shell.get_string("theme-mode")))
+        self.shell.connect("changed::theme-mode", lambda *_: theme.set_selected(
+            MODES.index(self.shell.get_string("theme-mode"))))
         theme.connect("notify::selected", lambda r, _: self.shell.set_string("theme-mode", MODES[r.get_selected()]))
         group.add(theme)
 
