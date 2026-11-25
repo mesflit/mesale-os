@@ -19,9 +19,10 @@ export class ThemeManager {
         this._panel = schema ? new Gio.Settings({settings_schema: schema}) : null;
 
         this._settings.connectObject('changed::theme-mode', () => this._applyMode(), this);
-        this._interface.connectObject('changed::color-scheme', () => this._applyColors(), this);
+        this._interface.connectObject('changed::color-scheme', () => this._onSchemeChanged(), this);
         this._timer = GLib.timeout_add_seconds(GLib.PRIORITY_LOW, 60, () => {
-            this._applyMode();
+            if (this._settings.get_string('theme-mode') === 'auto')
+                this._applyMode();
             return GLib.SOURCE_CONTINUE;
         });
         this._applyMode();
@@ -34,18 +35,35 @@ export class ThemeManager {
         this._interface.disconnectObject(this);
     }
 
-    _applyMode() {
+    _wantedScheme() {
         const mode = this._settings.get_string('theme-mode');
         const hour = GLib.DateTime.new_now_local().get_hour();
         const night = hour < DAY_STARTS || hour >= DAY_ENDS;
-        const dark = mode === 'dark' || (mode === 'auto' && night);
-        const scheme = dark ? 'prefer-dark' : 'prefer-light';
+        return mode === 'dark' || (mode === 'auto' && night) ? 'prefer-dark' : 'prefer-light';
+    }
+
+    _applyMode() {
+        const scheme = this._wantedScheme();
         if (this._interface.get_string('color-scheme') !== scheme)
             this._interface.set_string('color-scheme', scheme);
     }
 
+    // GNOME's Dark Style switch and Settings write color-scheme directly. Their choice
+    // becomes our mode, so nothing flips it back. They use 'default' for light, which
+    // would leave the shell itself dark; changing the mode turns it into 'prefer-light'.
+    _onSchemeChanged() {
+        const scheme = this._interface.get_string('color-scheme');
+        if (scheme !== this._wantedScheme()) {
+            const mode = scheme === 'prefer-dark' ? 'dark' : 'light';
+            if (this._settings.get_string('theme-mode') !== mode)
+                this._settings.set_string('theme-mode', mode);
+            this._applyMode();
+        }
+        this._applyColors();
+    }
+
     _applyColors() {
-        const light = this._interface.get_string('color-scheme') === 'prefer-light';
+        const light = this._interface.get_string('color-scheme') !== 'prefer-dark';
         const colors = light ? PANEL_COLORS.light : PANEL_COLORS.dark;
         this._panel?.set_string('trans-bg-color', colors.background);
         this._panel?.set_string('trans-border-custom-color', colors.border);
