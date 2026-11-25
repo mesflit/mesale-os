@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 # One-time setup by the maintainer: nix run .#create-signing-key
-# Creates the archive key outside the repository, stores the private half in the
-# APT_SIGNING_KEY secret of the GitHub repository and the public half in vendor/.
+# Creates the archive key, stores the private half only in the APT_SIGNING_KEY secret
+# of the GitHub repository, and writes the public half to vendor/. Keeps no local copy.
 set -euo pipefail
-umask 077
-export GNUPGHOME="${MESALE_SIGNING:-$HOME/.local/share/mesale-signing}"
-mkdir -p "$GNUPGHOME"
-if [ -n "$(gpg -K 2>/dev/null)" ]; then
-  echo "Using the existing key in $GNUPGHOME"
-else
-  gpg --batch --passphrase '' --quick-gen-key "Mesale OS archive signing key" rsa4096 sign never
+PUBLIC=vendor/mesale-archive.asc
+if [ -e "$PUBLIC" ]; then
+  echo "$PUBLIC already exists. Installed systems trust that key; replacing it would stop their updates." >&2
+  exit 1
 fi
+GNUPGHOME=$(mktemp -d)
+export GNUPGHOME
+trap 'gpgconf --kill all; rm -rf "$GNUPGHOME"' EXIT
+gpg --batch --quiet --passphrase '' --quick-gen-key "Mesale OS archive signing key" rsa4096 sign never
 gpg --armor --export-secret-keys | gh secret set APT_SIGNING_KEY
-(umask 022 && gpg --armor --export >vendor/mesale-archive.asc)
-echo "Done. Back up $GNUPGHOME, then commit and push vendor/mesale-archive.asc."
+gpg --armor --export >"$PUBLIC"
+echo "Done. Commit and push $PUBLIC."
