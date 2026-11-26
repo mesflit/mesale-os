@@ -1,6 +1,6 @@
 GROUP=drivers
 NAME="Acer Nitro / Predator"
-DESC="Fan, thermal profile, charge limit"
+DESC="Fans, thermal profile, charge limit; the NitroSense key opens its page"
 NET=1
 PKGS="mesale-nitro"
 after() { /usr/lib/mesale/enroll-mok || true; }

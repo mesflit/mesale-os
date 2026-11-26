@@ -4,5 +4,5 @@ Architecture: all
 Maintainer: Mesale OS <mesale@localhost>
 Section: misc
 Priority: optional
-Depends: dkms, linux-headers-amd64, kmod
+Depends: dkms, linux-headers-amd64, kmod, pkexec
 Description: Acer Nitro/Predator support (Linuwu-Sense, GPL-3)

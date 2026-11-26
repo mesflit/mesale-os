@@ -34,12 +34,18 @@ switch-windows=['<Alt>Tab']
 switch-applications=['<Super>Tab']
 
 [org/gnome/settings-daemon/plugins/media-keys]
-custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/']
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/nitro/']
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal]
 name='Terminal'
 command='ptyxis --new-window'
 binding='<Super>Return'
+
+# The NitroSense key (KEY_PROG3 from the patched Linuwu-Sense)
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/nitro]
+name='Nitro'
+command='mesale-center --nitro'
+binding='XF86Launch3'
 
 [org/gnome/desktop/peripherals/touchpad]
 tap-to-click=true

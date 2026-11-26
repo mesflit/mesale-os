@@ -1,0 +1,28 @@
+--- a/src/linuwu_sense.c
++++ b/src/linuwu_sense.c
+@@ -230,6 +230,10 @@
+  };
+  
+  static struct input_dev *acer_wmi_input_dev;
++
++ static bool nitro_key_cycles;
++ module_param(nitro_key_cycles, bool, 0644);
++ MODULE_PARM_DESC(nitro_key_cycles, "NitroSense key cycles the thermal profile instead of sending KEY_PROG3");
+  static struct input_dev *acer_wmi_accel_dev;
+  
+  struct event_return_value {
+@@ -3326,7 +3330,13 @@
+          if (return_value.key_num == 0x4  && !has_cap(ACER_CAP_NITRO_SENSE_V4))
+              acer_toggle_turbo();
+          if ((return_value.key_num == 0x5 || (return_value.key_num == 0x4 && has_cap(ACER_CAP_NITRO_SENSE_V4))) && has_cap(ACER_CAP_PLATFORM_PROFILE))
+-             acer_thermal_profile_change();
++         {
++             /* Mesale: the NitroSense key opens Mesale Center (KEY_PROG3) unless nitro_key_cycles=1 */
++             if (nitro_key_cycles || !acer_wmi_input_dev)
++                 acer_thermal_profile_change();
++             else
++                 sparse_keymap_report_event(acer_wmi_input_dev, 0x23, 1, true);
++         }
+          break;
+      case WMID_AC_EVENT:
+          if(has_cap(ACER_CAP_PREDATOR_SENSE) || has_cap(ACER_CAP_NITRO_SENSE_V4)){

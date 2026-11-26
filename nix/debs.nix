@@ -43,6 +43,8 @@ runCommand "mesale-repo"
       rm pkg/mesale-base/etc/apt/sources.list.d/mesale.sources
     fi
     install -m644 ${linuwu-sense}/src/linuwu_sense.c ${linuwu-sense}/LICENSE pkg/mesale-nitro/usr/src/linuwu-sense-1.0/
+    # The NitroSense key sends KEY_PROG3 (opens Mesale Center) instead of cycling the profile
+    patch -d pkg/mesale-nitro/usr/src/linuwu-sense-1.0 -p2 <${../vendor/linuwu-sense-nitro-key.patch}
 
     grep -rlE '@(BUILD|VERSION|CODENAME)@' pkg | xargs sed -i \
       "s/@BUILD@/${version}.${buildId}/g; s/@VERSION@/${version}/g; s/@CODENAME@/${codename}/g"
