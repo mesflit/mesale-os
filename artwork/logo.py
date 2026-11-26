@@ -19,3 +19,31 @@ def wordmark():
 
 
 DOT = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"><circle cx="7" cy="7" r="6" fill="#ff8a3d"/></svg>'
+
+
+QUADRANTS = " ▘▝▀▖▌▞▛▗▚▐▜▄▙▟█"
+
+
+def terminal(columns=30, rows=14):
+    """The mark in quadrant blocks, coloured top to bottom with fastfetch's $1 $2 $3."""
+    import io
+    import subprocess
+
+    from PIL import Image
+
+    # The flames span x 54..202 and y 50..198; a cell is two pixels wide and two tall.
+    svg = (mark(tile=False).replace('fill="url(#flame)"', 'fill="#000"')
+           .replace('viewBox="0 0 256 256"', 'viewBox="54 50 148 148" preserveAspectRatio="none"'))
+    png = subprocess.run(["rsvg-convert", "-w", str(columns * 2), "-h", str(rows * 2)],
+                         input=svg.encode(), capture_output=True, check=True).stdout
+    image = Image.open(io.BytesIO(png)).convert("RGBA")
+    lines = []
+    for row in range(rows):
+        cells = ""
+        for column in range(columns):
+            bits = sum(1 << i for i, (dx, dy) in enumerate(((0, 0), (1, 0), (0, 1), (1, 1)))
+                       if image.getpixel((2 * column + dx, 2 * row + dy))[3] > 110)
+            cells += QUADRANTS[bits]
+        colour = 1 if row < rows * .4 else 2 if row < rows * .72 else 3
+        lines.append(f"${colour}{cells.rstrip()}")
+    return "\n".join(lines) + "\n"

@@ -62,6 +62,7 @@ def brand():
     write_png(SHARE / "mesale/gdm-logo.png", logo.wordmark())
     write_png(SHARE / "plymouth/themes/mesale/logo.png", logo.mark(tile=False), 200)
     write_png(SHARE / "plymouth/themes/mesale/dot.png", logo.DOT)
+    write(SHARE / "mesale/fastfetch.txt", logo.terminal())
 
 
 wallpapers()

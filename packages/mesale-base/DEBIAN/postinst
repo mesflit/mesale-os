@@ -1,5 +1,11 @@
 #!/bin/sh
 set -e
 cp /usr/lib/mesale/os-release /usr/lib/os-release
-echo 'Mesale OS \n \l' > /etc/issue
+# Replace Debian's login banners and message of the day, but keep anything the user wrote.
+debian() { [ ! -s "$1" ] || grep -q 'Debian' "$1"; }
+if debian /etc/issue; then echo 'Mesale OS \n \l' >/etc/issue; fi
+if debian /etc/issue.net; then echo 'Mesale OS' >/etc/issue.net; fi
+if debian /etc/motd; then : >/etc/motd; fi
+# Installed before this package came along; mesale-identity keeps them away from now on.
+rm -f /usr/share/gnome-background-properties/debian-*.xml /etc/xdg/kcm-about-distrorc
 [ -e /usr/share/plymouth/themes/mesale/mesale.plymouth ] && plymouth-set-default-theme mesale || true

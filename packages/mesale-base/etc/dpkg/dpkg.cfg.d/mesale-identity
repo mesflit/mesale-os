@@ -1,0 +1,3 @@
+# Debian's artwork comes with gdm3 (desktop-base). Keep it out of the wallpaper list.
+path-exclude=/usr/share/gnome-background-properties/debian-*
+path-exclude=/etc/xdg/kcm-about-distrorc

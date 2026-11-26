@@ -62,6 +62,13 @@ enable-advanced-experimental-features=false
 [org/gnome/Ptyxis]
 use-system-font=true
 interface-style='system'
+# One profile with the Mesale palette (its file comes from /etc/skel)
+default-profile-uuid='4d65f5a1-e000-4000-8000-6d6573616c65'
+profile-uuids=['4d65f5a1-e000-4000-8000-6d6573616c65']
+
+[org/gnome/Ptyxis/Profiles/4d65f5a1-e000-4000-8000-6d6573616c65]
+label='Mesale'
+palette='mesale'
 
 [org/gnome/shell/extensions/dash-to-panel]
 panel-positions='{"0":"BOTTOM","1":"BOTTOM","2":"BOTTOM","3":"BOTTOM"}'
