@@ -1,2 +1,4 @@
 Acquire::Retries "3";
 APT::Color "true";
+# The system is English only: skip translated package descriptions (40% of every update).
+Acquire::Languages "none";
