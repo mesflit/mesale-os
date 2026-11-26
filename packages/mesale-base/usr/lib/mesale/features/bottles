@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="Bottles"
+DESC="Run Windows programs"
+NET=1
+FLATPAKS="com.usebottles.bottles"

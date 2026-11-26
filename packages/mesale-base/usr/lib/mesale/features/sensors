@@ -1,0 +1,5 @@
+GROUP=drivers
+NAME="Rotation and light sensors"
+DESC="Auto-rotate and auto-brightness on 2-in-1 laptops and tablets"
+NET=1
+PKGS="iio-sensor-proxy"

@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="Gamescope"
+DESC="Run games or Steam in a scaled fullscreen session"
+NET=1
+PKGS="gamescope"

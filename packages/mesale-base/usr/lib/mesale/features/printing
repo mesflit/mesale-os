@@ -1,0 +1,5 @@
+GROUP=drivers
+NAME="Printing"
+DESC="Network and USB printers without drivers (IPP Everywhere)"
+NET=1
+PKGS="cups cups-pk-helper cups-browsed ipp-usb avahi-daemon libnss-mdns"

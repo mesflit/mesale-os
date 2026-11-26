@@ -1,0 +1,5 @@
+GROUP=drivers
+NAME="Thunderbolt"
+DESC="Authorize docks and Thunderbolt devices"
+NET=1
+PKGS="bolt"

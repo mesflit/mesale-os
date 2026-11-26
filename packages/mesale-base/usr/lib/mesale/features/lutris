@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="Lutris"
+DESC="Games from every store and emulator in one library"
+NET=1
+FLATPAKS="net.lutris.Lutris"

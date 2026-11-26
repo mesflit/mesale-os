@@ -1,0 +1,5 @@
+GROUP=development
+NAME="Distrobox"
+DESC="Other Linux distributions in containers"
+NET=1
+PKGS="distrobox podman passt uidmap catatonit"

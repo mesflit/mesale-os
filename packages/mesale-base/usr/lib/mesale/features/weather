@@ -1,0 +1,5 @@
+GROUP=more
+NAME="Weather"
+DESC="Forecast for your places"
+NET=1
+PKGS="gnome-weather"

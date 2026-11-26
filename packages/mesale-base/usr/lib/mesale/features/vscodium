@@ -1,0 +1,5 @@
+GROUP=development
+NAME="VSCodium"
+DESC="Code editor, open build of VS Code"
+NET=1
+FLATPAKS="com.vscodium.codium"

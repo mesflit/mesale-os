@@ -1,0 +1,5 @@
+GROUP=drivers
+NAME="Fingerprint reader"
+DESC="Log in and use sudo with a fingerprint"
+NET=1
+PKGS="fprintd libpam-fprintd"

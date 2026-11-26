@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="Heroic"
+DESC="Epic, GOG and Amazon games"
+NET=1
+FLATPAKS="com.heroicgameslauncher.hgl"

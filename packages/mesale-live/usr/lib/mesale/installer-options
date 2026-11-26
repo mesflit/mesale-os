@@ -8,6 +8,8 @@ def dmi(a):
 on = set()
 if any(int(m, 16) >= 0x1e00 for m in re.findall(r" 03\d\d: 10de:([0-9a-f]{4})", pci)): on.add("nvidia")  # Turing+
 if "acer" in dmi("sys_vendor") and any(x in dmi("product_name") for x in ("nitro", "predator")): on.add("nitro")
+if any(pathlib.Path("/sys/bus/thunderbolt/devices").glob("domain*")): on.add("thunderbolt")
+if dmi("chassis_type").strip() in ("30", "31", "32"): on.add("sensors")  # tablet, convertible, detachable
 G = {"system": ("System", "Works offline"), "apps": ("Applications", "Included, uncheck to leave out"), "drivers": ("Drivers", "Needs internet, detected automatically"),
      "terminal": ("Terminal", "Needs internet, each installs only itself"), "gaming": ("Gaming", "Needs internet"), "development": ("Development", "Needs internet"), "more": ("More apps", "Needs internet")}
 L = {g: [] for g in G}

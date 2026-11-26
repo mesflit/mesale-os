@@ -1,0 +1,5 @@
+GROUP=more
+NAME="Clocks"
+DESC="World clocks, alarms and timers"
+NET=1
+PKGS="gnome-clocks"

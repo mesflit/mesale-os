@@ -1,0 +1,6 @@
+GROUP=development
+NAME="Rust"
+DESC="rustup; then run: rustup default stable"
+NET=1
+PKGS="rustup"
+BIN=rustup

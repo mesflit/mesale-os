@@ -1,0 +1,5 @@
+GROUP=more
+NAME="exFAT and NTFS"
+DESC="Format drives that work on Windows and macOS"
+NET=1
+PKGS="exfatprogs ntfs-3g"
