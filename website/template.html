@@ -3,51 +3,86 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mesale OS</title>
+<title>Mesale OS: a Linux desktop you assemble yourself</title>
 <meta name="description" content="A Linux desktop you assemble yourself: Debian base, newest kernel, drivers and GNOME.">
 <meta property="og:title" content="Mesale OS">
+<meta property="og:description" content="Debian base, newest kernel, drivers and GNOME. You choose every piece that gets installed.">
 <meta property="og:image" content="https://mesflit.github.io/mesaleos/img/social.jpg">
+<meta name="theme-color" content="#3f86d8">
 <link rel="icon" href="img/mesale-logo.svg">
 <link rel="preload" as="image" href="img/day.webp">
 <link rel="stylesheet" href="style.css">
 </head>
 <body data-look="day">
-<header class="hero">
-  <nav class="wrap" aria-label="Main">
-    <a class="brand" href="#"><img src="img/mesale-flame.svg" width="30" height="30" alt="">Mesale OS</a>
-    <span><a href="#features">Features</a><a href="#base">Base</a><a href="{{REPO}}">Source</a></span>
-  </nav>
-  <div class="wrap pitch">
-    <h1>A desktop as light as the sky it wears.</h1>
-    <p>Mesale OS pairs a Debian base with the newest kernel, drivers and GNOME. You choose every piece that gets installed.</p>
-    <p class="actions">
-      <a class="button" id="download" href="{{REPO}}/releases">Download the ISO</a>
-      <a class="button quiet" href="#features">Choose your features</a>
-    </p>
-    <p class="note" id="release">{{VERSION}} “{{CODENAME}}”, development build for 64-bit PCs.</p>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="top" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="img/mesale-flame.svg" width="28" height="28" alt="">Mesale OS</a>
+    <span class="links"><a href="#why">Why</a><a href="#screenshots">Screenshots</a><a href="#features">Features</a><a href="#install">Install</a><a href="#faq">FAQ</a></span>
+    <a class="button small" href="#install">Download</a>
   </div>
-  <div class="demo wrap">
-    <div class="command" role="search">
-      <ul id="results" aria-live="polite"></ul>
-      <input id="command" type="text" autocomplete="off" spellcheck="false" placeholder="Search, open, calculate…" aria-label="Try the command bar">
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div class="pitch">
+      <p class="badge"><span class="star" aria-hidden="true">✦</span> {{VERSION}} “{{CODENAME}}” · development build</p>
+      <h1>A desktop as light as the sky it wears.</h1>
+      <p class="lead">Debian underneath, the newest kernel, drivers and GNOME on top. You choose every piece that gets installed, and nothing else.</p>
+      <p class="actions">
+        <a class="button" id="download" href="{{REPO}}/releases">Download the ISO</a>
+        <a class="button quiet" href="#features">Choose your features</a>
+      </p>
+      <p class="note" id="release">For 64-bit PCs.</p>
     </div>
-    <p>This is the command bar. On Mesale OS, press <kbd>Super</kbd> <kbd>Space</kbd>. Here, type <button type="button" class="try">steam</button> or <button type="button" class="try">12*4</button>.</p>
+    <div class="demo">
+      <div class="command" role="search">
+        <ul id="results" aria-live="polite"></ul>
+        <input id="command" type="text" autocomplete="off" spellcheck="false" placeholder="Search, open, calculate…" aria-label="Try the command bar">
+      </div>
+      <p>The command bar opens with <kbd>Super</kbd> <kbd>Space</kbd>. Try <button type="button" class="try">steam</button> or <button type="button" class="try">12*4</button>.</p>
+    </div>
   </div>
 </header>
-<main>
+
+<main id="main">
+  <section class="wrap why" id="why">
+    <div class="head"><p class="eyebrow">Why Mesale OS</p><h2>Simple to start, yours to shape</h2></div>
+    <div class="cards">
+      <article><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><h3>Newest hardware support</h3><p>Recent kernel, Mesa and firmware from Debian backports, so new graphics cards and laptops just work.</p></article>
+      <article><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM8 12l3 3 5-6"/></svg><h3>Only what you pick</h3><p>{{FEATURE_COUNT}} optional features, one checkbox each. Nothing is bundled or preselected behind your back.</p></article>
+      <article><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12a4 4 0 0 1 4 4v1a4 4 0 0 1-7 2.6L14 15h-4l-1 .6A4 4 0 0 1 2 13v-1a4 4 0 0 1 4-4zM7 11v3M5.5 12.5h3M16 12h.01M18 13.5h.01"/></svg><h3>Ready for games</h3><p>Steam, GameMode, MangoHud and Proton tools are one click away. NVIDIA drivers install only if you ask.</p></article>
+      <article><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7 3 12l5 5M16 7l5 5-5 5M14 4l-4 16"/></svg><h3>Open from top to bottom</h3><p>Packages, artwork, the ISO and this page are built in public from one Nix flake. Free software under the GPL.</p></article>
+    </div>
+  </section>
+
+  {{SCREENSHOTS}}
+
   <section class="wrap looks">
-    <div><h2>Five skies</h2><p>Every wallpaper is drawn by code in the repository. Pick one to see it on this page. In the installer it also sets light or dark.</p></div>
+    <div class="head"><p class="eyebrow">Wallpapers</p><h2>Five skies to choose from</h2><p>Every wallpaper is drawn by code in the repository. Tap one to try it on this page. In the installer it also picks light or dark mode.</p></div>
     <div class="look-row">{{LOOKS}}</div>
   </section>
-  <section class="wrap film"><h2>See it in 28 seconds</h2><video controls muted loop playsinline preload="none" poster="video/poster.jpg" width="1280" height="720"><source src="video/mesale.mp4" type="video/mp4"></video></section>
-  {{SCREENSHOTS}}
+
   <section class="wrap features" id="features">
-    <div class="intro"><h2>You pick all {{FEATURE_COUNT}} of them</h2><p>This is the installer's own list. Applications come included and can be unchecked. Nothing else is selected for you, except drivers the installer detects.</p></div>
+    <div class="head"><p class="eyebrow">Features</p><h2>You pick all {{FEATURE_COUNT}} of them</h2><p>This is the installer's own list. Applications come included and can be unchecked. Already installed? Tick what you want and copy the command, or use Mesale Center.</p></div>
+    <label class="filter"><span class="sr">Search features</span><input id="filter" type="search" placeholder="Search features, for example “game” or “editor”" autocomplete="off"></label>
     <form id="picker">{{FEATURES}}</form>
+    <p class="empty" id="empty" hidden>No feature matches that search.</p>
     <div class="output"><code id="line">mesale-feature add …</code><button type="button" class="button" id="copy">Copy command</button></div>
   </section>
+
+  <section class="wrap install" id="install">
+    <div class="head"><p class="eyebrow">Install</p><h2>Up and running in three steps</h2></div>
+    <ol class="steps">
+      <li><h3>Download</h3><p>Get the latest ISO from <a href="{{REPO}}/releases">the releases page</a>.</p></li>
+      <li><h3>Make a USB stick</h3><p>Write the ISO with GNOME Disks, balenaEtcher or Ventoy. This erases the stick.</p></li>
+      <li><h3>Boot and install</h3><p>Start from the stick. The installer opens by itself and asks for your wallpaper and features.</p></li>
+    </ol>
+    <div class="vm"><p><b>Just curious?</b> Try it in a virtual machine first. With Nix installed:</p><code>git clone {{REPO}} &amp;&amp; cd mesaleos &amp;&amp; nix run</code></div>
+  </section>
+
   <section class="wrap base" id="base">
-    <h2>What it is made of</h2>
+    <div class="head"><p class="eyebrow">Under the hood</p><h2>What it is made of</h2></div>
     <dl>
       <div><dt>Debian 13</dt><dd>The base system, with Debian's security updates.</dd></div>
       <div><dt>Kernel, Mesa, firmware</dt><dd>From Debian backports. <span data-version="linux-image-amd64"></span></dd></div>
@@ -56,13 +91,23 @@
       <div><dt>File system</dt><dd>ext4, btrfs or xfs, with optional encryption.</dd></div>
       <div><dt>Nix</dt><dd>Artwork, packages, ISO tools and this page are built through one flake.</dd></div>
     </dl>
-    <p class="caveat">Mesale OS is in development. GNOME and the libraries it pulls in come from Debian testing, so their security fixes can arrive later than in stable. Try it in a virtual machine first.</p>
+  </section>
+
+  <section class="wrap faq" id="faq">
+    <div class="head"><p class="eyebrow">Questions</p><h2>Good to know</h2></div>
+    <details><summary>Is it ready for everyday use?</summary><p>Not yet. Mesale OS is in development. GNOME and the libraries it pulls in come from Debian testing, so their security fixes can arrive later than in stable. Try it in a virtual machine or on a spare computer first.</p></details>
+    <details><summary>Can I add or remove things after installing?</summary><p>Yes. Open Mesale Center, or run <code>mesale-feature add</code> and <code>mesale-feature remove</code> in a terminal. The feature list above writes that command for you.</p></details>
+    <details><summary>How do updates work?</summary><p>Debian packages update through Debian as usual. Mesale's own packages come from a signed repository that is rebuilt on every change.</p></details>
+    <details><summary>Does it work with my NVIDIA card?</summary><p>GTX 16, RTX and newer cards can use NVIDIA's driver, which is downloaded from NVIDIA only if you select it. Older cards use the open nouveau driver.</p></details>
+    <details><summary>Why is every release named after something in the sky?</summary><p>The desktop is all sky: clouds, dawn, dusk and night. So every release is named after a celestial body: a star, a planet, a moon. This one is “{{CODENAME}}”.</p></details>
+    <details><summary>What does the name mean?</summary><p>Mesale is short for <i>meşale</i>, Turkish for torch.</p></details>
   </section>
 </main>
+
 <footer><div class="wrap">
-  <p><img src="img/mesale-flame.svg" width="40" height="40" alt=""></p>
-  <p>Mesale is short for <i>meşale</i>, Turkish for torch.</p>
-  <p><a href="{{REPO}}">Source on GitHub</a><a href="{{REPO}}/releases">All builds</a><a href="{{REPO}}/issues">Report a problem</a></p>
+  <p class="brand"><img src="img/mesale-flame.svg" width="36" height="36" alt="">Mesale OS</p>
+  <p>{{VERSION}} “{{CODENAME}}”. Free software under the GNU GPL, version 3 or later.</p>
+  <p class="links"><a href="{{REPO}}">Source on GitHub</a><a href="{{REPO}}/releases">All builds</a><a href="{{REPO}}/issues">Report a problem</a></p>
 </div></footer>
 <script type="application/json" id="search-data">{{SEARCH}}</script>
 <script type="module" src="app.js"></script>

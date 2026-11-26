@@ -23,7 +23,7 @@ Rules for people and coding agents.
 | Change Mesale Center | `packages/mesale-desktop/usr/lib/mesale/center/` |
 | Change the installer | `packages/mesale-live/etc/calamares/` and `usr/lib/calamares/modules/mesale/` |
 | Change what is on the ISO | `config/packages.sh` |
-| Bump the version | `config/mesale.conf` |
+| Bump the version | `config/mesale.conf` (each release is named after a celestial body) |
 
 ## Feature files
 

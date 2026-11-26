@@ -13,7 +13,6 @@ SCREENSHOTS = {"desktop": "The desktop", "command-bar": "Command bar", "center":
                "installer": "Installer", "dark": "Night look"}
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--film-features")
 for option in ("features", "looks", "screenshots", "version", "codename", "template"):
     parser.add_argument(f"--{option}", default="")
 args = parser.parse_args()
@@ -41,7 +40,7 @@ def feature_html(groups):
             f'<li><label><input type="checkbox" id="f-{esc(i)}" value="{esc(i)}" data-group="{key}"{checked}>'
             f'<span><b>{esc(name)}</b> {esc(desc)}</span></label></li>'
             for i, name, desc in groups.get(key, []))
-        out.append(f'<fieldset><legend>{title}</legend><ul>{items}</ul></fieldset>')
+        out.append(f'<fieldset><legend>{title} <small>{len(groups.get(key, []))}</small></legend><ul>{items}</ul></fieldset>')
     return "\n".join(out)
 
 
@@ -53,18 +52,19 @@ def look_html(looks):
 
 
 def screenshot_html():
-    figures = [f'<figure><img src="img/{k}.webp" width="1600" height="900" alt="{title} of Mesale OS" loading="lazy">'
-               f'<figcaption>{title}</figcaption></figure>'
-               for k, title in SCREENSHOTS.items() if (pathlib.Path(args.screenshots) / f"{k}.png").exists()]
-    return f'<section class="shots wrap" id="screenshots"><h2>What it looks like</h2><div>{"".join(figures)}</div></section>' if figures else ""
+    shots = [(k, title) for k, title in SCREENSHOTS.items() if (pathlib.Path(args.screenshots) / f"{k}.png").exists()]
+    if not shots:
+        return ""
+    first, first_title = shots[0]
+    tabs = "".join(
+        f'<button type="button" class="shot-tab" data-shot="{k}" aria-pressed="{str(k == first).lower()}">'
+        f'<img src="img/{k}.webp" width="320" height="180" alt="" loading="lazy"><span>{title}</span></button>'
+        for k, title in shots)
+    return (f'<section class="wrap shots" id="screenshots"><div class="head"><p class="eyebrow">Screenshots</p>'
+            f'<h2>See it before you install it</h2></div>'
+            f'<figure class="shot-main"><img id="shot" src="img/{first}.webp" width="1600" height="900" '
+            f'alt="{first_title} of Mesale OS"></figure><div class="shot-tabs">{tabs}</div></section>')
 
-
-if args.film_features:
-    # A sample for the film: the first features of every group
-    args.features = args.film_features
-    names = [name for items in features().values() for _, name, _ in items[:4]]
-    print(f"const FEATURES = {json.dumps(names[:28])};")
-    raise SystemExit
 
 groups = features()
 values = {

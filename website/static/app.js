@@ -46,9 +46,38 @@ for (const look of looks) {
         hero.style.setProperty('--hero', `url("img/${look.dataset.look}.webp")`);
         document.body.toggleAttribute('data-dark', look.dataset.dark === 'true');
         looks.forEach(other => other.setAttribute('aria-pressed', String(other === look)));
-        hero.scrollIntoView();
+        hero.scrollIntoView({behavior: 'smooth'});
     });
 }
+
+// Screenshots
+const shot = $('shot');
+const tabs = document.querySelectorAll('.shot-tab');
+for (const tab of tabs) {
+    tab.addEventListener('click', () => {
+        shot.src = `img/${tab.dataset.shot}.webp`;
+        shot.alt = `${tab.textContent} of Mesale OS`;
+        tabs.forEach(other => other.setAttribute('aria-pressed', String(other === tab)));
+    });
+}
+
+// Feature search
+$('filter').addEventListener('input', () => {
+    const query = $('filter').value.trim().toLowerCase();
+    let shown = 0;
+    for (const group of $('picker').querySelectorAll('fieldset')) {
+        let visible = 0;
+        const groupMatch = group.querySelector('legend').textContent.toLowerCase().includes(query);
+        for (const item of group.querySelectorAll('li')) {
+            const match = !query || groupMatch || item.textContent.toLowerCase().includes(query);
+            item.hidden = !match;
+            visible += match;
+        }
+        group.hidden = !visible;
+        shown += visible;
+    }
+    $('empty').hidden = shown > 0;
+});
 
 // Feature picker
 function showCommand() {
