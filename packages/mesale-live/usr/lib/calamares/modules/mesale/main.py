@@ -8,6 +8,9 @@ status = "Preparing Mesale OS"
 def pretty_name(): return "Mesale OS features"
 def pretty_status_message(): return status
 
+# Virtual machine guest tools by systemd-detect-virt name (see config/packages.sh)
+VM_GUEST = {"kvm": ["spice-vdagent", "qemu-guest-agent"], "qemu": ["spice-vdagent", "qemu-guest-agent"],
+            "vmware": ["open-vm-tools-desktop", "open-vm-tools"]}
 LIVE = ["mesale-live", "live-boot", "live-boot-initramfs-tools", "live-config", "live-config-systemd", "live-tools", "calamares"]
 
 def run():
@@ -33,6 +36,14 @@ def run():
     ch("apt-mark", "manual", "cryptsetup-initramfs", "cryptsetup", "btrfs-progs", "xfsprogs", "dosfstools", "e2fsprogs", "efibootmgr", "sudo", "pciutils", "mesale-desktop", "xwayland")
     if ch("apt-get", "-y", "purge", "--autoremove", *[p for p in LIVE if has(p)]) != 0:
         return ("Could not remove live packages", "See /var/log/mesale-install.log")
+
+    # Guest tools only help inside their own hypervisor; elsewhere they are idle services
+    virt = subprocess.run(["systemd-detect-virt", "--vm"], capture_output=True, text=True).stdout.strip()
+    keep = set(VM_GUEST.get(virt, []))
+    guest = sorted({p for ps in VM_GUEST.values() for p in ps if p not in keep and has(p)})
+    if guest:
+        status = "Removing unused guest tools"
+        ch("apt-get", "-y", "purge", "--autoremove", *guest)
 
     look = gs.value("packagechooser_look") or "day"
     walls = json.load(open("/usr/share/mesale/looks.json"))

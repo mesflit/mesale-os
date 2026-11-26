@@ -21,7 +21,9 @@ GRAPHICS="mesa-vulkan-drivers mesa-va-drivers libgl1-mesa-dri libegl-mesa0 libgl
 
 VM_GUEST="spice-vdagent qemu-guest-agent open-vm-tools-desktop"
 
-DESKTOP_EXTRA="xdg-desktop-portal-gtk gnome-bluetooth-sendto libpam-gnome-keyring gnome-menus"
+# Installed together with GNOME from testing. Built from stable, these would pull
+# a second ICU and a second Evolution Data Server next to the ones GNOME uses.
+DESKTOP_EXTRA="xdg-desktop-portal-gtk gnome-bluetooth-sendto libpam-gnome-keyring gnome-menus xfsprogs"
 
 # Newest GNOME, from Debian testing. Its dependencies follow automatically.
 GNOME="gnome-shell gnome-session gdm3 gnome-control-center gnome-settings-daemon

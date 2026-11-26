@@ -59,9 +59,9 @@ install_system() {
   copy_repo
   in_chroot "$ROOT" apt-get -q update
   preseed
-  apt_install $CORE $NETWORK $KERNEL $FIRMWARE $BOOT $GRAPHICS $VM_GUEST $DESKTOP_EXTRA
+  apt_install $CORE $NETWORK $KERNEL $FIRMWARE $BOOT $GRAPHICS $VM_GUEST
   say "GNOME"
-  apt_install -t forky $GNOME
+  apt_install -t forky $GNOME $DESKTOP_EXTRA
   pin_testing
   apt_install mesale-live $APPS
   apt_install $OFFLINE_FEATURES
