@@ -4,3 +4,11 @@ DESC="Steam with up-to-date graphics runtime"
 NET=1
 PKGS="steam-devices"
 FLATPAKS="com.valvesoftware.Steam"
+# The udev rules give the user access to /dev/uinput and controllers.
+# Apply them now so Steam does not warn until the next reboot.
+after() {
+  [ -d /run/systemd/system ] && [ "${MESALE_INSTALL:-0}" = 0 ] || return 0
+  modprobe uinput 2>/dev/null || true
+  udevadm control --reload-rules || true
+  udevadm trigger --subsystem-match=misc --subsystem-match=hidraw --subsystem-match=input --action=change || true
+}
