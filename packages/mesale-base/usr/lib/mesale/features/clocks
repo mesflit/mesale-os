@@ -2,4 +2,5 @@ GROUP=more
 NAME="Clocks"
 DESC="World clocks, alarms and timers"
 NET=1
+TESTING=1
 PKGS="gnome-clocks"

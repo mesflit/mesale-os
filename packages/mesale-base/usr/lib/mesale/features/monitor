@@ -1,4 +1,6 @@
-GROUP=apps
+GROUP=more
 NAME="System Monitor"
 DESC="Processes and resources"
+NET=1
+TESTING=1
 PKGS="gnome-system-monitor"

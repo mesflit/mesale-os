@@ -11,7 +11,24 @@ def pretty_status_message(): return status
 # Virtual machine guest tools by systemd-detect-virt name (see config/packages.sh)
 VM_GUEST = {"kvm": ["spice-vdagent", "qemu-guest-agent"], "qemu": ["spice-vdagent", "qemu-guest-agent"],
             "vmware": ["open-vm-tools-desktop", "open-vm-tools"]}
+# Needed by the installed system. Tools for filesystems, encryption and hardware it does not use are dropped.
+KEEP = ["cryptsetup-initramfs", "cryptsetup", "btrfs-progs", "xfsprogs", "dosfstools", "e2fsprogs", "efibootmgr", "sudo", "pciutils", "mesale-desktop", "xwayland"]
 LIVE = ["mesale-live", "live-boot", "live-boot-initramfs-tools", "live-config", "live-config-systemd", "live-tools", "calamares"]
+
+def unused_hardware(root):
+    """Packages for CPUs, GPUs, filesystems and encryption this installation does not have."""
+    def lines(path):
+        try: return [l.split() for l in open(root + path) if l.strip() and not l.lstrip().startswith("#")]
+        except OSError: return []
+    fs = {l[2] for l in lines("/etc/fstab") if len(l) > 2}
+    cpu = open("/proc/cpuinfo").read()
+    pci = subprocess.run(["lspci", "-n"], capture_output=True, text=True).stdout.lower()
+    gpus = set(re.findall(r" 03\d\d: ([0-9a-f]{4}):", pci))
+    drop = {"xfsprogs": "xfs" not in fs, "btrfs-progs": "btrfs" not in fs,
+            "cryptsetup-initramfs": not lines("/etc/crypttab"), "cryptsetup": not lines("/etc/crypttab"),
+            "intel-microcode": "GenuineIntel" not in cpu, "amd64-microcode": "AuthenticAMD" not in cpu,
+            "firmware-intel-graphics": "8086" not in gpus, "firmware-amd-graphics": "1002" not in gpus}
+    return [p for p, yes in drop.items() if yes]
 
 def run():
     global status
@@ -33,7 +50,9 @@ def run():
     ch("update-initramfs", "-c", "-k", "all")
 
     status = "Removing live packages"; libcalamares.job.setprogress(0.02)
-    ch("apt-mark", "manual", "cryptsetup-initramfs", "cryptsetup", "btrfs-progs", "xfsprogs", "dosfstools", "e2fsprogs", "efibootmgr", "sudo", "pciutils", "mesale-desktop", "xwayland")
+    unused = [p for p in unused_hardware(root) if has(p)]
+    ch("apt-mark", "manual", *[p for p in KEEP if p not in unused and has(p)])
+    if unused: ch("apt-mark", "auto", *unused)  # the purge below autoremoves them
     if ch("apt-get", "-y", "purge", "--autoremove", *[p for p in LIVE if has(p)]) != 0:
         return ("Could not remove live packages", "See /var/log/mesale-install.log")
 
@@ -88,6 +107,14 @@ def run():
         ch("dpkg", "--configure", "-a")
         with open(root + "/var/lib/mesale/pending", "a") as f: f.write("\n".join(failed) + "\n")
         ch("systemctl", "enable", "mesale-pending.service")
+    # The ISO carries the system features' dependencies so they install offline.
+    # Keep only those a chosen feature needs.
+    try: offline = [p for p in open(root + "/usr/share/mesale/offline-packages").read().split() if has(p)]
+    except OSError: offline = []
+    if offline:
+        status = "Removing unused system tools"
+        ch("apt-mark", "auto", *offline)
+        ch("apt-get", "-y", "autoremove", "--purge")
     user = gs.value("username")
     if "fish" in todo and "fish" not in failed and user: ch("usermod", "-s", "/usr/bin/fish", user)
     ch("apt-get", "clean")

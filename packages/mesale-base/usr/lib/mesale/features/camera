@@ -2,4 +2,5 @@ GROUP=more
 NAME="Camera"
 DESC="Photos and videos with the webcam"
 NET=1
+TESTING=1
 PKGS="gnome-snapshot libcamera-ipa"

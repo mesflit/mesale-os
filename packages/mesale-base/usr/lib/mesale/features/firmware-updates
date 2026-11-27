@@ -1,0 +1,6 @@
+GROUP=drivers
+NAME="Firmware Updates"
+DESC="BIOS and device firmware from the vendors (fwupd)"
+NET=1
+PKGS="fwupd"
+BIN=fwupdmgr

@@ -8,7 +8,7 @@ APT=(apt-get -y -o DPkg::Lock::Timeout=300 -o Dpkg::Options::=--force-confold)
 usage() { sed -n 2p "$0"; exit 1; }
 
 load() {
-  NAME="" DESC="" PKGS="" FLATPAKS="" BIN="" NET=0
+  NAME="" DESC="" PKGS="" FLATPAKS="" BIN="" NET=0 TESTING=0
   prepare() { :; }
   after() { :; }
   . "$FEATURES/$1"
@@ -52,7 +52,13 @@ add() {
   load "$1"
   prepare
   [ "$NET" = 0 ] || "${APT[@]}" update
-  [ -z "$PKGS" ] || "${APT[@]}" install --no-install-recommends $PKGS
+  local from=()
+  [ "$TESTING" = 0 ] || from=(-t forky) # GNOME apps come from the same release as GNOME
+  if [ -n "$PKGS" ]; then
+    # Offline features install from the image; once removed, they come from the network.
+    "${APT[@]}" install --no-install-recommends "${from[@]}" $PKGS ||
+      { [ "$NET" = 0 ] && "${APT[@]}" update && "${APT[@]}" install --no-install-recommends "${from[@]}" $PKGS; }
+  fi
   [ -z "$FLATPAKS" ] || install_flatpaks "$1"
   after
 }

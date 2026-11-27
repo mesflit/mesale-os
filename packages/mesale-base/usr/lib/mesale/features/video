@@ -1,4 +1,6 @@
-GROUP=apps
+GROUP=more
 NAME="Video Player"
-DESC="Showtime"
-PKGS="showtime"
+DESC="Showtime, with H.264, HEVC and AV1 codecs"
+NET=1
+TESTING=1
+PKGS="showtime gstreamer1.0-libav gstreamer1.0-plugins-bad"

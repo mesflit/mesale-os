@@ -1,4 +1,6 @@
-GROUP=apps
+GROUP=more
 NAME="Archive Manager"
-DESC="zip, tar, 7z"
+DESC="7z, rar and more (Files opens zip and tar)"
+NET=1
+TESTING=1
 PKGS="file-roller"

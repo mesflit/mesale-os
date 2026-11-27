@@ -2,4 +2,5 @@ GROUP=more
 NAME="Disk Usage"
 DESC="See what fills your disk"
 NET=1
+TESTING=1
 PKGS="baobab"

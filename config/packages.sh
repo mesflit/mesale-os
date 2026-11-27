@@ -1,8 +1,8 @@
 # Package sets for the system image. Recommends are off, so everything needed is listed.
 
 CORE="systemd-sysv dbus dbus-user-session libpam-systemd locales tzdata console-setup
-  keyboard-configuration kbd sudo less nano bash-completion man-db polkitd rtkit
-  pciutils usbutils curl wget unzip fwupd plymouth mokutil"
+  keyboard-configuration kbd sudo less nano bash-completion polkitd rtkit
+  pciutils curl plymouth mokutil"
 
 NETWORK="iproute2 iputils-ping wpasupplicant wireless-regdb network-manager
   systemd-resolved systemd-timesyncd libnss-resolve libnss-myhostname"
@@ -23,24 +23,23 @@ VM_GUEST="spice-vdagent qemu-guest-agent open-vm-tools-desktop"
 
 # Installed together with GNOME from testing. Built from stable, these would pull
 # a second ICU and a second Evolution Data Server next to the ones GNOME uses.
-DESKTOP_EXTRA="xdg-desktop-portal-gtk gnome-bluetooth-sendto libpam-gnome-keyring gnome-menus xfsprogs"
+DESKTOP_EXTRA="xdg-desktop-portal-gtk libpam-gnome-keyring xfsprogs"
 
 # Newest GNOME, from Debian testing. Its dependencies follow automatically.
 GNOME="gnome-shell gnome-session gdm3 gnome-control-center gnome-settings-daemon
-  mutter-common xwayland nautilus ptyxis gnome-text-editor loupe papers showtime
-  gnome-calculator gnome-calendar gnome-system-monitor gnome-disk-utility
+  mutter-common xwayland nautilus ptyxis gnome-text-editor loupe papers
   gnome-software gnome-software-plugin-flatpak gnome-software-plugin-deb xdg-desktop-portal-gnome
   gnome-shell-extension-dash-to-panel gnome-shell-extension-blur-my-shell
   gnome-shell-extension-tiling-assistant gnome-shell-extension-appindicator
-  adwaita-icon-theme gir1.2-adw-1 gstreamer1.0-plugins-good
-  gstreamer1.0-plugins-bad gstreamer1.0-libav python3-gi python3-yaml e2fsprogs
+  adwaita-icon-theme gir1.2-adw-1 gstreamer1.0-plugins-good python3-gi e2fsprogs
   systemd-sysv libpam-systemd systemd-resolved systemd-oomd systemd-timesyncd
   libnss-resolve libnss-myhostname udev"
 
-# Preinstalled applications. Each one can be unchecked in the installer.
-APPS="firefox-esr gnome-text-editor loupe papers showtime gnome-calculator
-  gnome-calendar gnome-system-monitor gnome-disk-utility file-roller
+# Preinstalled applications, kept to the essentials. Each one can be unchecked in the
+# installer; everything else (browser, calendar, codecs, ...) is an optional feature.
+APPS="gnome-text-editor loupe papers
   gnome-software gnome-software-plugin-flatpak gnome-software-plugin-deb"
 
-# Dependencies of the features that must install without a network.
+# Dependencies of the features that must install without a network. The installer
+# removes the ones no chosen feature needs (see offline-packages in build/lib/rootfs.sh).
 OFFLINE_FEATURES="systemd-zram-generator irqbalance systemd-oomd ufw apparmor"

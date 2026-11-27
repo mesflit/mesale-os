@@ -1,4 +1,6 @@
-GROUP=apps
+GROUP=more
 NAME="Calculator"
 DESC="GNOME calculator"
+NET=1
+TESTING=1
 PKGS="gnome-calculator"

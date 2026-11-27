@@ -1,4 +1,6 @@
-GROUP=apps
+GROUP=more
 NAME="Disks"
-DESC="Disk management"
+DESC="Format and manage drives"
+NET=1
+TESTING=1
 PKGS="gnome-disk-utility"

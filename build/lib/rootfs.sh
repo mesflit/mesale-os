@@ -65,6 +65,7 @@ install_system() {
   pin_testing
   apt_install mesale-live $APPS
   apt_install $OFFLINE_FEATURES
+  echo $OFFLINE_FEATURES >"$ROOT/usr/share/mesale/offline-packages" # the installer drops the unused ones
   in_chroot "$ROOT" systemctl set-default graphical.target
   in_chroot "$ROOT" systemctl enable NetworkManager systemd-resolved gdm3 2>/dev/null || true
   in_chroot "$ROOT" systemctl disable NetworkManager-wait-online.service 2>/dev/null || true

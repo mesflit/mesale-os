@@ -2,4 +2,5 @@ GROUP=more
 NAME="Weather"
 DESC="Forecast for your places"
 NET=1
+TESTING=1
 PKGS="gnome-weather"

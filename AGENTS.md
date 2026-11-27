@@ -34,6 +34,7 @@ GROUP=gaming             # apps system drivers terminal gaming development more
 NAME="Steam"
 DESC="One short line"
 NET=1                    # needs a network
+TESTING=1                # optional: install from Debian testing, like GNOME (GNOME apps)
 PKGS="steam-devices"     # Debian packages
 FLATPAKS="com.valvesoftware.Steam"
 BIN=steam                # optional: command that proves it is installed
@@ -41,7 +42,7 @@ prepare() { ...; }       # optional: before apt
 after() { ...; }         # optional: after apt
 ```
 
-`GROUP=apps` means preinstalled on the ISO and removed when unchecked. `GROUP=system` must install offline: list its dependencies in `OFFLINE_FEATURES`.
+`GROUP=apps` means preinstalled on the ISO and removed when unchecked. Keep it to the essentials: the system ships minimal, a browser and the rest are optional. `GROUP=system` must install offline: list its dependencies in `OFFLINE_FEATURES`.
 
 ## Updates
 

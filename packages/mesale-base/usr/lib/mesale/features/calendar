@@ -1,4 +1,6 @@
-GROUP=apps
+GROUP=more
 NAME="Calendar"
 DESC="GNOME calendar"
+NET=1
+TESTING=1
 PKGS="gnome-calendar"

@@ -4,5 +4,5 @@ Architecture: all
 Maintainer: Mesale OS <mesale@localhost>
 Section: misc
 Priority: optional
-Depends: ufw, apparmor, fwupd
+Depends: ufw, apparmor
 Description: Mesale OS security hardening

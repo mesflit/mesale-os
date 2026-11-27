@@ -1,4 +1,5 @@
-GROUP=apps
+GROUP=more
 NAME="Firefox"
-DESC="Web browser"
-PKGS="firefox-esr"
+DESC="Web browser, with H.264 video"
+NET=1
+PKGS="firefox-esr libavcodec61"
