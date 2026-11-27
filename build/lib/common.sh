@@ -3,7 +3,8 @@
 BASE=$WORK/base.tar
 ROOT=$WORK/root
 
-say() { printf '\033[1;34m==>\033[0m \033[1m%s\033[0m\n' "$*"; }
+# Each step shows the time since the build started, to see where it goes.
+say() { printf '\033[1;34m==>\033[0m \033[1m%s\033[0m \033[2m[%d:%02d]\033[0m\n' "$*" $((SECONDS / 60)) $((SECONDS % 60)); }
 
 # Mount the virtual file systems a chroot needs. They vanish with the namespace.
 mount_chroot() {

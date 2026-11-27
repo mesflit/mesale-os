@@ -34,3 +34,4 @@ if [ "$STAGE" = clean ]; then rm -rf "$WORK"; exit 0; fi
 build_base
 build_rootfs
 build_iso
+say "Done"

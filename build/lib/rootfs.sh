@@ -103,6 +103,7 @@ clean_system() {
 build_rootfs() {
   if [ "$STAGE" = iso ] && [ -e "$ROOT.ok" ]; then refresh_system; else install_system; fi
   in_chroot "$ROOT" /usr/lib/mesale/installer-options
+  say "initramfs"
   echo COMPRESSLEVEL=19 >"$ROOT/etc/initramfs-tools/conf.d/mesale-live"
   in_chroot "$ROOT" update-initramfs -u -k all
   rm "$ROOT/etc/initramfs-tools/conf.d/mesale-live"

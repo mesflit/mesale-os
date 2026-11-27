@@ -23,7 +23,7 @@ jobs:
         run: |
           set -o pipefail
           build=$(nix build --no-link --print-out-paths .#build)
-          sudo MESALE_BUILD=/mnt/mesale ZSTD=22 "$build/bin/mesale-build" 2>&1 | tee build.log |
+          sudo MESALE_BUILD=/mnt/mesale ZSTD=19 "$build/bin/mesale-build" 2>&1 | tee build.log |
             grep -vE '^(Get:|Selecting|Preparing|Unpacking|Setting up|\(Reading)'
       - name: Publish the dev release
         env:
