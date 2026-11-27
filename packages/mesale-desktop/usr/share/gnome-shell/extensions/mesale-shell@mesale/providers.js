@@ -37,7 +37,8 @@ const notify = (title, body) => Main.notify?.(title, body);
 
 function inTerminal(command) {
     const hold = `${command}; echo; read -rsn1 -p "Press any key to close"`;
-    for (const [program, ...args] of [['ptyxis', '--new-window', '--'], ['gnome-terminal', '--'], ['kgx', '--']]) {
+    // Ptyxis opens its own window for a command; --new-window added an empty second one
+    for (const [program, ...args] of [['ptyxis', '--'], ['gnome-terminal', '--'], ['kgx', '--']]) {
         if (GLib.find_program_in_path(program)) {
             spawn([program, ...args, 'bash', '-c', hold]);
             return;
