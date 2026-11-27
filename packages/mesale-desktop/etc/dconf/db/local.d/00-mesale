@@ -47,6 +47,11 @@ name='Nitro'
 command='mesale-center --nitro'
 binding='XF86Launch3'
 
+# A terminal started for a command (the command bar, Super+Return) opens one window,
+# not the restored session next to it
+[org/gnome/Ptyxis]
+restore-session=false
+
 [org/gnome/desktop/peripherals/touchpad]
 tap-to-click=true
 
