@@ -2,9 +2,15 @@
 import GLib from 'gi://GLib';
 import * as Clipboard from '../clipboard.js';
 import {EMOJI} from '../emoji.js';
-import {MAX_RESULTS, copy, inTerminal, normalize, openUri, spawn} from './util.js';
+import {MAX_RESULTS, copy, inTerminal, normalize, openUri, setting, spawn} from './util.js';
 
-const WEB_SEARCH = 'https://duckduckgo.com/?q=';
+const ENGINES = {
+    duckduckgo: ['DuckDuckGo', 'https://duckduckgo.com/?q='],
+    google: ['Google', 'https://www.google.com/search?q='],
+    startpage: ['Startpage', 'https://www.startpage.com/do/search?q='],
+    brave: ['Brave Search', 'https://search.brave.com/search?q='],
+    ecosia: ['Ecosia', 'https://www.ecosia.org/search?q='],
+};
 
 export function* command(text) {
     const line = text.trim();
@@ -14,8 +20,9 @@ export function* command(text) {
 
 export function* web(text) {
     const words = text.trim();
-    yield {title: words ? `Search the web for “${words}”` : 'Type to search the web', kind: 'Web',
-        icon: 'web-browser-symbolic', run: () => words && openUri(WEB_SEARCH + encodeURIComponent(words))};
+    const [name, url] = ENGINES[setting('search-engine', 'duckduckgo')] ?? ENGINES.duckduckgo;
+    yield {title: words ? `Search ${name} for “${words}”` : `Type to search ${name}`, kind: 'Web',
+        icon: 'web-browser-symbolic', run: () => words && openUri(url + encodeURIComponent(words))};
 }
 
 export function* emoji(query) {
@@ -31,6 +38,11 @@ export function* emoji(query) {
 
 export function* clipboard(query) {
     const entries = Clipboard.history();
+    if (!setting('clipboard-history', true)) {
+        yield {title: 'Clipboard history is off', subtitle: 'Turn it on in Mesale Center, Desktop', kind: '',
+            icon: 'edit-paste-symbolic', run: () => {}};
+        return;
+    }
     if (!entries.length) {
         yield {title: 'Nothing copied yet', subtitle: 'Text you copy appears here until you log out', kind: '',
             icon: 'edit-paste-symbolic', run: () => {}};

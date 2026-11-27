@@ -1,10 +1,10 @@
 // Light, dark or automatic theme, and the colors that follow it.
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import {isDaytime, zoneCoordinates} from './sun.js';
 
 const PANEL_SCHEMA = 'org.gnome.shell.extensions.dash-to-panel';
-const DAY_STARTS = 7;
-const DAY_ENDS = 19;
+const ZONES = '/usr/share/zoneinfo/zone1970.tab';
 const PANEL_COLORS = {
     light: {background: '#ffffff', border: 'rgba(255,255,255,0.55)', opacity: 0.42},
     dark: {background: '#0f1730', border: 'rgba(190,210,255,0.16)', opacity: 0.72},
@@ -18,7 +18,8 @@ export class ThemeManager {
         const schema = Gio.SettingsSchemaSource.get_default().lookup(PANEL_SCHEMA, true);
         this._panel = schema ? new Gio.Settings({settings_schema: schema}) : null;
 
-        this._settings.connectObject('changed::theme-mode', () => this._applyMode(), this);
+        for (const key of ['theme-mode', 'auto-switch', 'light-hour', 'dark-hour'])
+            this._settings.connectObject(`changed::${key}`, () => this._applyMode(), this);
         this._interface.connectObject('changed::color-scheme', () => this._onSchemeChanged(), this);
         this._timer = GLib.timeout_add_seconds(GLib.PRIORITY_LOW, 60, () => {
             if (this._settings.get_string('theme-mode') === 'auto')
@@ -38,9 +39,41 @@ export class ThemeManager {
 
     _wantedScheme() {
         const mode = this._settings.get_string('theme-mode');
+        return mode === 'dark' || (mode === 'auto' && this._isNight()) ? 'prefer-dark' : 'prefer-light';
+    }
+
+    // Auto: dark between the set hours, or after sunset where the time zone is
+    _isNight() {
+        if (this._settings.get_string('auto-switch') === 'sun') {
+            const place = this._place();
+            if (place)
+                return !isDaytime(new Date(), ...place);
+        }
         const hour = GLib.DateTime.new_now_local().get_hour();
-        const night = hour < DAY_STARTS || hour >= DAY_ENDS;
-        return mode === 'dark' || (mode === 'auto' && night) ? 'prefer-dark' : 'prefer-light';
+        const light = this._settings.get_int('light-hour'), dark = this._settings.get_int('dark-hour');
+        if (light === dark)
+            return false;
+        const day = light <= dark ? hour >= light && hour < dark : hour >= light || hour < dark;
+        return !day;
+    }
+
+    // [latitude, longitude] of the local time zone, cached until the zone changes
+    _place() {
+        let zone = GLib.TimeZone.new_local().get_identifier();
+        if (!zone.includes('/')) {
+            try {
+                zone = new TextDecoder().decode(GLib.file_get_contents('/etc/timezone')[1]).trim();
+            } catch {}
+        }
+        if (zone !== this._zone) {
+            this._zone = zone;
+            try {
+                this._coordinates = zoneCoordinates(new TextDecoder().decode(GLib.file_get_contents(ZONES)[1]), zone);
+            } catch {
+                this._coordinates = null;
+            }
+        }
+        return this._coordinates;
     }
 
     _applyMode() {

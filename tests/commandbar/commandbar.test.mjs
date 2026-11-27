@@ -74,3 +74,29 @@ test('emoji list', async () => {
     for (const [char, words] of EMOJI)
         assert.match(words, /^[a-z0-9 -]+$/, `${char}: words must be plain lower case to match normalized queries`);
 });
+
+test('sunrise and sunset from the time zone', async () => {
+    const {isDaytime, parseCoordinates, sunTimesUtc, zoneCoordinates} = await load('sun.js');
+    const close = (actual, expected, label) =>
+        assert.ok(Math.abs(actual - expected) < 0.1, `${label}: ${actual.toFixed(2)} not near ${expected}`);
+
+    const [lat, lon] = zoneCoordinates('#comment\nTR\t+4101+02858\tEurope/Istanbul\n', 'Europe/Istanbul');
+    close(lat, 41.0167, 'latitude');
+    close(lon, 28.9667, 'longitude');
+    assert.deepEqual(parseCoordinates('+404251-0740023').map(v => +v.toFixed(3)), [40.714, -74.006]);
+    assert.equal(parseCoordinates('nonsense'), null);
+
+    // Istanbul, UTC+3 all year: 05:32-20:39 in June, 08:26-17:39 in December
+    const june = sunTimesUtc(new Date(Date.UTC(2026, 5, 21)), lat, lon);
+    close(june.sunrise, 2.53, 'June sunrise');
+    close(june.sunset, 17.65, 'June sunset');
+    const december = sunTimesUtc(new Date(Date.UTC(2026, 11, 21)), lat, lon);
+    close(december.sunrise, 5.43, 'December sunrise');
+    close(december.sunset, 14.65, 'December sunset');
+
+    assert.equal(isDaytime(new Date(Date.UTC(2026, 11, 21, 12)), lat, lon), true);    // 15:00 local
+    assert.equal(isDaytime(new Date(Date.UTC(2026, 11, 21, 15)), lat, lon), false);   // 18:00 local
+    // Midnight sun in Tromsø in June, polar night in December
+    assert.equal(isDaytime(new Date(Date.UTC(2026, 5, 21, 23)), 69.65, 18.96), true);
+    assert.equal(isDaytime(new Date(Date.UTC(2026, 11, 21, 11)), 69.65, 18.96), false);
+});

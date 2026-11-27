@@ -2,6 +2,13 @@
 <schemalist>
   <schema id="org.mesale.shell" path="/org/mesale/shell/">
     <key name="theme-mode" type="s"><choices><choice value="light"/><choice value="dark"/><choice value="auto"/></choices><default>'light'</default><summary>Light, dark or auto</summary></key>
+    <key name="auto-switch" type="s"><choices><choice value="hours"/><choice value="sun"/></choices><default>'hours'</default><summary>Auto theme: at set hours, or at sunrise and sunset of the time zone</summary></key>
+    <key name="light-hour" type="i"><range min="0" max="23"/><default>7</default><summary>Auto theme turns light at this hour</summary></key>
+    <key name="dark-hour" type="i"><range min="0" max="23"/><default>19</default><summary>Auto theme turns dark at this hour</summary></key>
     <key name="command-bar" type="as"><default><![CDATA[['<Super>space']]]></default><summary>Command bar shortcut</summary></key>
+    <key name="search-engine" type="s"><choices><choice value="duckduckgo"/><choice value="google"/><choice value="startpage"/><choice value="brave"/><choice value="ecosia"/></choices><default>'duckduckgo'</default><summary>Web search engine of the command bar</summary></key>
+    <key name="search-files" type="b"><default>true</default><summary>Show files in command bar results</summary></key>
+    <key name="search-web" type="b"><default>true</default><summary>Offer a web search when nothing else matches</summary></key>
+    <key name="clipboard-history" type="b"><default>true</default><summary>Keep copied text in memory for the @ prefix</summary></key>
   </schema>
 </schemalist>

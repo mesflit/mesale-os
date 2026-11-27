@@ -20,6 +20,8 @@ function add(text) {
 }
 
 export function start() {
+    if (handler)
+        return;   // already watching
     selection = global.display.get_selection();
     handler = selection.connect('owner-changed', (_selection, type, source) => {
         if (type !== Meta.SelectionType.SELECTION_CLIPBOARD || !source)

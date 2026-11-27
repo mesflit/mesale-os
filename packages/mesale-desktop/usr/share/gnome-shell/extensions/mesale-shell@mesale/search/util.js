@@ -8,6 +8,17 @@ export {normalize} from '../parse.js';
 
 export const MAX_RESULTS = 8;
 
+// The extension's settings (org.mesale.shell), handed over by start() in index.js
+let settings = null;
+export const useSettings = value => {
+    settings = value;
+};
+export const setting = (key, fallback) => {
+    if (!settings)
+        return fallback;
+    return typeof fallback === 'boolean' ? settings.get_boolean(key) : settings.get_string(key);
+};
+
 export const launchContext = () => global.create_app_launch_context(0, -1);
 export const openUri = uri => Gio.AppInfo.launch_default_for_uri(uri, launchContext());
 export const copy = text => St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, text);

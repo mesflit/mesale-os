@@ -13,7 +13,7 @@ import {apps, favorites, windows} from './apps.js';
 import {featureResults, forgetFeatures} from './features.js';
 import {browse, files} from './files.js';
 import {clipboard, command, emoji, softwareSearch, web} from './prefixes.js';
-import {MAX_RESULTS, normalize} from './util.js';
+import {MAX_RESULTS, normalize, setting, useSettings} from './util.js';
 
 // One failing provider must not empty the bar
 function* safe(provider, ...args) {
@@ -48,8 +48,10 @@ function* allResults(text) {
     yield* safe(systemActions, query);
     yield* safe(settingsPanels, query);
     yield* safe(featureResults, query);
-    yield* safe(files, query);
-    yield* safe(web, text);
+    if (setting('search-files', true))
+        yield* safe(files, query);
+    if (setting('search-web', true))
+        yield* safe(web, text);
     yield* safe(softwareSearch, text);
 }
 
@@ -63,9 +65,15 @@ export function search(text) {
     return results;
 }
 
-export function start() {
+let settingsHandler = 0;
+
+export function start(settings) {
+    useSettings(settings);
     History.load();
-    Clipboard.start();
+    // Clipboard history only runs while it is wanted; turning it off forgets what it kept
+    const follow = () => (settings.get_boolean('clipboard-history') ? Clipboard.start() : Clipboard.stop());
+    settingsHandler = settings.connect('changed::clipboard-history', follow);
+    follow();
 }
 
 // Called when the bar opens: refresh what may have changed
@@ -74,7 +82,11 @@ export function prepare(onUpdate) {
     FileIndex.refresh(onUpdate);
 }
 
-export function stop() {
+export function stop(settings) {
+    if (settingsHandler)
+        settings.disconnect(settingsHandler);
+    settingsHandler = 0;
+    useSettings(null);
     stopTimers();
     Clipboard.stop();
     FileIndex.stop();

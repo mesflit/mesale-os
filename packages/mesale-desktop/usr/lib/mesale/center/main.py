@@ -11,6 +11,7 @@ gi.require_version("Adw", "1")
 from gi.repository import Adw, Gdk, Gio, Gtk  # noqa: E402
 
 import nitro  # noqa: E402
+from desktop import DesktopPage  # noqa: E402
 from features import FeaturesPage  # noqa: E402
 from look import ACCENTS, LookPage  # noqa: E402
 from system import SystemPage  # noqa: E402
@@ -30,6 +31,7 @@ class Window(Adw.ApplicationWindow):
         toasts = Adw.ToastOverlay(child=self.stack)
         pages = [
             (LookPage(), "Look", "applications-graphics-symbolic"),
+            (DesktopPage(), "Desktop", "preferences-desktop-symbolic"),
             (FeaturesPage(toasts), "Features", "application-x-addon-symbolic"),
             (SystemPage(), "System", "computer-symbolic"),
         ]
