@@ -21,6 +21,7 @@ Rules for people and coding agents.
 | Change desktop defaults | `packages/mesale-desktop/etc/dconf/db/local.d/00-mesale` |
 | Change the command bar | `packages/mesale-desktop/usr/share/gnome-shell/extensions/mesale-shell@mesale/` |
 | Change Mesale Center | `packages/mesale-desktop/usr/lib/mesale/center/` |
+| Change Mesale Play (game library) | `packages/mesale-play/usr/lib/mesale/play/`, tests in `tests/play/` |
 | Change the installer | `packages/mesale-live/etc/calamares/` and `usr/lib/calamares/modules/mesale/` |
 | Change what is on the ISO | `config/packages.sh` |
 | Bump the version | `config/mesale.conf` (each release is named after a celestial body) |
