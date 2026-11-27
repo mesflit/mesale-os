@@ -24,10 +24,17 @@ let
   # A fingerprint of everything a package is built from. Builds are not byte for byte
   # reproducible (the wallpapers are rendered anew), so publishing compares this field
   # and keeps the published package when it is the same (tools/sign-repo.sh).
-  shared = "${artwork} ${../vendor} ${linuwu-sense} ${./debs.nix} ${version} ${codename}";
+  # Only what goes into each package counts: new wallpapers update mesale-base alone.
+  shared = "${./debs.nix} ${version} ${codename}";
+  extra = {
+    mesale-base = "${artwork} ${../vendor}";
+    mesale-nitro = "${linuwu-sense} ${../vendor/linuwu-sense-nitro-key.patch}";
+  };
   source =
     name:
-    builtins.hashString "sha256" (builtins.unsafeDiscardStringContext "${../packages + "/${name}"} ${shared}");
+    builtins.hashString "sha256" (
+      builtins.unsafeDiscardStringContext "${../packages + "/${name}"} ${shared} ${extra.${name} or ""}"
+    );
   sources = lib.concatMapStrings (name: "${name} ${source name}\n") (
     builtins.attrNames (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ../packages))
   );
