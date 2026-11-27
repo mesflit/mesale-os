@@ -22,6 +22,7 @@ jobs:
       - name: Publish the apt repository
         env:
           APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
+          MESALE_PUBLISHED: https://mesflit.github.io/mesaleos/apt
         run: |
           if [ -n "$APT_SIGNING_KEY" ]; then
             nix run .#sign-repo -- site/apt

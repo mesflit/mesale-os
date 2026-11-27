@@ -5,6 +5,9 @@
   writeShellApplication,
   debootstrap,
   dpkg,
+  apt,
+  curl,
+  diffutils,
   perl,
   wget,
   gnutar,
@@ -77,11 +80,24 @@ in
       };
 
   # Copy the packages to DIR and sign them with the key in APT_SIGNING_KEY.
-  sign-repo = command "mesale-sign-repo" "tools/sign-repo.sh" [
-    gnupg
-    gawk
-    coreutils
-  ] { MESALE_REPO = "${debs}"; };
+  sign-repo =
+    command "mesale-sign-repo" "tools/sign-repo.sh"
+      [
+        gnupg
+        gawk
+        coreutils
+        dpkg
+        apt
+        curl
+        diffutils
+        findutils
+        gnused
+        gzip
+      ]
+      {
+        MESALE_REPO = "${debs}";
+        SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
+      };
 
   create-signing-key = command "mesale-create-signing-key" "tools/create-signing-key.sh" [
     gnupg
