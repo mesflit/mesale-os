@@ -9,8 +9,8 @@ import {search} from './providers.js';
 const OFFSET = -84;          // rests just above the bottom bar
 const OFFSET_START = -60;
 const STYLE = {
-    light: 'background-color: rgba(255,255,255,0.72); color: #16243d; border-color: rgba(255,255,255,0.8);',
-    dark: 'background-color: rgba(18,27,54,0.72); color: #eef4ff; border-color: rgba(190,210,255,0.18);',
+    light: 'background-color: rgba(246,249,255,0.94); color: #16243d; border-color: rgba(255,255,255,0.9);',
+    dark: 'background-color: rgba(20,29,56,0.93); color: #eef4ff; border-color: rgba(190,210,255,0.16);',
 };
 
 export const CommandBar = GObject.registerClass(
@@ -26,10 +26,11 @@ class CommandBar extends St.Widget {
     }
 
     _buildUi() {
-        // Blurs the whole screen: rectangular, so there are no corner artefacts
-        const backdrop = new St.Widget({x_expand: true, y_expand: true});
-        backdrop.add_effect(new Shell.BlurEffect({mode: Shell.BlurMode.BACKGROUND, radius: 40, brightness: 0.96}));
-        this.add_child(backdrop);
+        // Dims the screen instead of blurring all of it: the windows stay readable
+        // and the card stands out. The card itself is nearly opaque, since a blur
+        // effect cannot follow its rounded corners.
+        this._backdrop = new St.Widget({style_class: 'mesale-backdrop', x_expand: true, y_expand: true});
+        this.add_child(this._backdrop);
 
         this._box = new St.BoxLayout({
             style_class: 'mesale-command', orientation: Clutter.Orientation.VERTICAL, reactive: true,
