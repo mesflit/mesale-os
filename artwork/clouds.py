@@ -4,17 +4,21 @@ from PIL import Image
 
 from fields import blur, fbm, linear, smoothstep
 
-WIDTH, HEIGHT = 1920, 1080   # soft content, upscaled for the final size
+BASE = 1080   # pixel sizes below are given for this height and scaled to the real one
 LAYERS = 5
 
 
 class Scene:
-    def __init__(self, look):
+    """Drawn at the final size, so the clouds stay sharp on 4K screens."""
+
+    def __init__(self, look, size):
         self.look = look
+        self.width, self.height = size
+        self.k = self.height / BASE
         self.rng = np.random.default_rng(look.seed)
-        yy, xx = np.mgrid[0:HEIGHT, 0:WIDTH].astype(np.float32)
-        self.u, self.v = xx / HEIGHT, yy / HEIGHT
-        self.sun_x, self.sun_y = look.sun[0] * WIDTH / HEIGHT, look.sun[1]
+        yy, xx = np.mgrid[0:self.height, 0:self.width].astype(np.float32)
+        self.u, self.v = xx / self.height, yy / self.height
+        self.sun_x, self.sun_y = look.sun[0] * self.width / self.height, look.sun[1]
         self.sun_distance = np.hypot(self.u - self.sun_x, self.v - self.sun_y)
         self.glow = (.30 * np.exp(-(self.sun_distance / .16) ** 2)
                      + .30 * np.exp(-(self.sun_distance / .5) ** 2))[..., None]
@@ -27,9 +31,13 @@ class Scene:
         image = top + (self.horizon - top) * np.clip(self.v / .85, 0, 1)[..., None] ** 1.1
         image += self.sun_color * self.glow * (.6 if self.look.dark else .7)
         if self.look.stars:
-            points = (self.rng.random(self.u.shape) > .9996) * self.rng.random(self.u.shape) ** 2
-            points = points * np.clip(1 - self.v * 1.4, 0, 1)
-            image += blur(points.astype(np.float32), 1)[..., None] * 5
+            # Placed on the 1080p grid, so the sky has the same stars at any size
+            grid = (BASE, round(BASE * self.width / self.height))
+            points = (self.rng.random(grid) > .9996) * self.rng.random(grid) ** 2
+            rows = np.arange(self.height) * BASE // self.height
+            cols = np.arange(self.width) * grid[1] // self.width
+            points = points[rows][:, cols] * np.clip(1 - self.v * 1.4, 0, 1)
+            image += blur(points.astype(np.float32), self.k)[..., None] * 5
         cirrus = fbm(self.rng, self.u * .6 + self.v * .5 + 5, self.v * 4.2 - self.u * .5 + 9, 6, 1.6)
         amount = smoothstep(.52, .80, cirrus) * np.clip(1 - self.v * 1.3, 0, 1) * .30
         return image + (self.light - image) * amount[..., None]
@@ -45,8 +53,8 @@ class Scene:
                 cx = heap_x + offset * width
                 cy = base - tall * np.exp(-(offset / .55) ** 2) * rng.uniform(.1, 1.0) + height * .3
                 radius = height * rng.uniform(.30, .85) * (.55 + .6 * np.exp(-offset * offset * 3))
-                x0, x1 = (int(np.clip((cx + s * (radius + .12)) * HEIGHT, 0, WIDTH)) for s in (-1, 1))
-                y0, y1 = (int(np.clip((cy + s * (radius + .12)) * HEIGHT, 0, HEIGHT)) for s in (-1, 1))
+                x0, x1 = (int(np.clip((cx + s * (radius + .12)) * self.height, 0, self.width)) for s in (-1, 1))
+                y0, y1 = (int(np.clip((cy + s * (radius + .12)) * self.height, 0, self.height)) for s in (-1, 1))
                 if x0 >= x1 or y0 >= y1:
                     continue
                 box = np.s_[y0:y1, x0:x1]
@@ -55,7 +63,7 @@ class Scene:
             heap_x += width * rng.uniform(.8, 1.9)
         return field
 
-    def layer(self, depth, warp_x, warp_y, detail):
+    def layer(self, depth, warp_x, warp_y, detail, fine):
         """One cloud layer. depth 0 is the farthest, 1 the nearest. Returns colour and alpha."""
         base, height = .56 + .40 * depth, .055 + .115 * depth
         haze = .62 * (1 - depth) ** 1.3
@@ -63,11 +71,15 @@ class Scene:
         balls = self.spheres(self.u + warp_x * strength, self.v + warp_y * strength, base, height, depth)
         body = smoothstep(base - .01, base + .10, self.v + warp_y * .10 + warp_x * .05)
         relief = np.maximum(balls, 0) + body * height * .55
-        alpha = np.clip(np.maximum(blur((balls > 0).astype(np.float32), 2 + 4 * depth), body), 0, 1)
+        k = self.k
+        alpha = np.clip(np.maximum(blur((balls > 0).astype(np.float32), (1 + 2 * depth) * k), body), 0, 1)
+        # Wispy, sharp edges: fine noise eats into the soft rim
+        rim = alpha * (1 - alpha) * 4
+        alpha = np.clip(alpha - rim * smoothstep(.45, .75, fine) * .7, 0, 1)
 
-        surface = (blur(relief, 5 + 11 * depth) + .6 * blur(relief, 18 + 34 * depth)
-                   + detail * .003 * (.5 + depth))
-        slope_x, slope_y = (np.gradient(surface, axis=a) * HEIGHT for a in (1, 0))
+        surface = (blur(relief, (4 + 9 * depth) * k) + .6 * blur(relief, (18 + 34 * depth) * k)
+                   + detail * .006 * (.5 + depth) + (fine - .5) * .0025 * (.4 + depth))
+        slope_x, slope_y = (np.gradient(surface, axis=a) * self.height for a in (1, 0))
         normal_z = 1 / np.sqrt(1 + slope_x ** 2 + slope_y ** 2)
         to_sun_x, to_sun_y = self.sun_x - self.u, self.sun_y - self.v
         length = np.sqrt(to_sun_x ** 2 + to_sun_y ** 2 + .06)
@@ -75,7 +87,7 @@ class Scene:
                    + normal_z * .30)
         depth_shade = np.clip((self.v - (base - height * 1.8)) / (height * 4.0), 0, 1)
         light = np.clip(.40 + lambert * .62 - depth_shade * .26 + .22 * np.exp(-(self.sun_distance / .55) ** 2), 0, 1)
-        light = blur(light, 3 + 4 * depth)[..., None]
+        light = blur(light, (3 + 4 * depth) * k)[..., None]
         color = np.where(light < .5,
                          self.shadow + (self.middle - self.shadow) * light * 2,
                          self.middle + (self.light - self.middle) * (light * 2 - 1))
@@ -84,16 +96,18 @@ class Scene:
 
 
 def render(look, size):
-    scene = Scene(look)
+    scene = Scene(look, size)
     image = scene.sky()
     warp_x = fbm(scene.rng, scene.u, scene.v, 6, 7) - .5
     warp_y = fbm(scene.rng, scene.u + 9, scene.v + 4, 6, 7) - .5
     detail = fbm(scene.rng, scene.u + 3, scene.v + 2, 6, 9) - .5
+    # Detail finer than a 1080p pixel: what makes the 4K picture look sharp
+    fine = fbm(np.random.default_rng(look.seed + 1), scene.u + 1, scene.v + 7, 7, 40)
     for i in range(LAYERS):
-        color, alpha = scene.layer(i / (LAYERS - 1), warp_x, warp_y, detail)
+        color, alpha = scene.layer(i / (LAYERS - 1), warp_x, warp_y, detail, fine)
         image = image * (1 - alpha) + color * alpha
     image += scene.sun_color * scene.glow * .18
     image = np.clip(image, 0, 1) ** (1 / 2.2)
-    grain = scene.rng.normal(0, .004, (HEIGHT, WIDTH, 1))   # hides banding
+    grain = scene.rng.normal(0, .004, (scene.height, scene.width, 1)).astype(np.float32)   # hides banding
     pixels = (np.clip(image + grain, 0, 1) * 255).astype(np.uint8)
-    return Image.fromarray(pixels).resize(size, Image.LANCZOS)
+    return Image.fromarray(pixels)

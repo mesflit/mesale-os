@@ -10,9 +10,12 @@ import sys
 
 from PIL import Image, ImageFilter
 
+import aero
+import glass
 import logo
-from clouds import render
 from looks import LOOKS
+
+RENDER = {"glass": glass.render, "aero": aero.render}
 
 OUT = pathlib.Path(sys.argv[1])
 WIDTH = int(sys.argv[2]) if len(sys.argv) > 2 else 3840
@@ -36,7 +39,7 @@ def wallpapers():
     previews.mkdir(parents=True, exist_ok=True)
     entries = []
     for key, look in LOOKS.items():
-        image = render(look, (WIDTH, WIDTH * 9 // 16))
+        image = RENDER[look.style](look, (WIDTH, WIDTH * 9 // 16))   # drawn at full size, not upscaled
         image.save(folder / f"{key}.jpg", quality=93, subsampling=0)
         image.resize((640, 360), Image.LANCZOS).save(previews / f"{key}.png")
         if key == "night":

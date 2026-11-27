@@ -9,7 +9,7 @@ Rules for people and coding agents.
 - Do not build ISOs locally. Push to `main`; GitHub Actions builds and publishes the `dev` release. Test it with `nix run`.
 - The user chooses. Never preselect or bundle an extra package. One feature installs one thing.
 - Do not add user-facing commands when Mesale Center or `mesale-feature` can do the job.
-- Keep the look its own: clouds, sky colors, real blur, one floating bottom bar. Never copy another system's names, art or layout.
+- Keep the look its own: sky colors, glass, real blur, one floating bottom bar. Never copy another system's names, art or layout.
 - Never commit personal data, tokens or home directory paths.
 
 ## Where things go
