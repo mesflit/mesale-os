@@ -7,7 +7,6 @@
   dpkg,
   apt,
   curl,
-  diffutils,
   perl,
   wget,
   gnutar,
@@ -89,9 +88,6 @@ in
         dpkg
         apt
         curl
-        diffutils
-        findutils
-        gnused
         gzip
       ]
       {

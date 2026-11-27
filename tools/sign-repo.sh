@@ -10,31 +10,27 @@ trap 'rm -rf "$GNUPGHOME"' EXIT
 mkdir -p "$1"
 cp -L --no-preserve=mode "$MESALE_REPO"/* "$1/"
 
-# Every build stamps every package with a new version. Where a package is the same
-# as the published one apart from that version, keep the published one, so installed
-# systems only download what really changed. MESALE_PUBLISHED is the live repository URL.
-unpack() { # deb dir: contents, file modes and control fields without the version
-  dpkg-deb -R "$1" "$2"
-  sed -i '/^Version: /d' "$2/DEBIAN/control"
-  (cd "$2" && find . -printf '%p %m %y\n' | LC_ALL=C sort) >"$2.modes"
-}
-if [ -n "${MESALE_PUBLISHED:-}" ]; then
-  work=$(mktemp -d)
+# Every build stamps every package with a new version. A package whose sources did not
+# change (same X-Mesale-Source, see nix/debs.nix) keeps its published file and version,
+# so installed systems only download what really changed. MESALE_PUBLISHED is the live
+# repository URL.
+if [ -n "${MESALE_PUBLISHED:-}" ] && curl -fsSL --retry 3 -o "$1/Packages.published" "$MESALE_PUBLISHED/Packages"; then
   kept=0
   for deb in "$1"/*.deb; do
-    name=${deb##*/}
-    rm -rf "${work:?}"/*
-    curl -fsSL --retry 3 -o "$work/old.deb" "$MESALE_PUBLISHED/$name" || continue
-    unpack "$deb" "$work/new"
-    unpack "$work/old.deb" "$work/old"
-    if diff -rq "$work/new" "$work/old" >/dev/null && cmp -s "$work/new.modes" "$work/old.modes"; then
-      cp "$work/old.deb" "$deb"
+    name=$(dpkg-deb -f "$deb" Package)
+    source=$(dpkg-deb -f "$deb" X-Mesale-Source)
+    published=$(awk -v p="$name" '/^Package: /{found = $2 == p} found && /^X-Mesale-Source: /{print $2; exit}' "$1/Packages.published")
+    if [ -n "$source" ] && [ "$source" = "$published" ] &&
+      curl -fsSL --retry 3 -o "$deb.published" "$MESALE_PUBLISHED/${deb##*/}" &&
+      [ "$(dpkg-deb -f "$deb.published" X-Mesale-Source)" = "$source" ]; then
+      mv "$deb.published" "$deb"
       kept=$((kept + 1))
     else
-      echo "Changed: ${name%_all.deb}"
+      rm -f "$deb.published"
+      echo "Changed: $name"
     fi
   done
-  rm -rf "$work"
+  rm "$1/Packages.published"
   echo "Unchanged packages kept at their published version: $kept"
   (
     cd "$1"

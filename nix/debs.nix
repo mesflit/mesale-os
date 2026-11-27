@@ -20,6 +20,17 @@ let
     rev = "4483b6c38b9bb963ac9ada9ca476578e0c63cc08";
     hash = "sha256-DFPzdypTqUD4TkqEBH/+QPIyCIMojd5euMVaLVWE2Cc=";
   };
+
+  # A fingerprint of everything a package is built from. Builds are not byte for byte
+  # reproducible (the wallpapers are rendered anew), so publishing compares this field
+  # and keeps the published package when it is the same (tools/sign-repo.sh).
+  shared = "${artwork} ${../vendor} ${linuwu-sense} ${./debs.nix} ${version} ${codename}";
+  source =
+    name:
+    builtins.hashString "sha256" (builtins.unsafeDiscardStringContext "${../packages + "/${name}"} ${shared}");
+  sources = lib.concatMapStrings (name: "${name} ${source name}\n") (
+    builtins.attrNames (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ../packages))
+  );
 in
 runCommand "mesale-repo"
   {
@@ -28,6 +39,7 @@ runCommand "mesale-repo"
       apt
       shellcheck
     ];
+    inherit sources;
   }
   ''
     cp -r --no-preserve=all ${../packages} pkg
@@ -55,7 +67,8 @@ runCommand "mesale-repo"
       find $p/DEBIAN -type f ! -name control -exec chmod 755 {} +
       if [ -d $p/usr/lib/mesale ]; then find $p/usr/lib/mesale -maxdepth 1 -type f -exec chmod 755 {} +; fi
       if [ -d $p/etc/sudoers.d ]; then chmod 440 $p/etc/sudoers.d/*; fi
-      if [ -d $p/etc ]; then (cd $p && find etc -type f | sed 's|^|/|') >$p/DEBIAN/conffiles; fi
+      if [ -d $p/etc ]; then (cd $p && find etc -type f | LC_ALL=C sort | sed 's|^|/|') >$p/DEBIAN/conffiles; fi
+      printf '%s' "$sources" | awk -v p="''${p##*/}" '$1 == p { print "X-Mesale-Source: " $2 }' >>$p/DEBIAN/control
       for s in $p/usr/bin/* $p/usr/lib/mesale/* $p/DEBIAN/p*; do
         if [ -f $s ] && head -1 $s | grep -q 'sh$'; then shellcheck -S error -e SC1091 $s; fi
       done
