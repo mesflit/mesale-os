@@ -40,7 +40,9 @@ class CommandBar extends St.Widget {
             style_class: 'mesale-entry', hint_text: 'Search, open, calculate\u2026', can_focus: true, x_expand: true,
         });
         this._entry.set_primary_icon(new St.Icon({icon_name: 'system-search-symbolic', icon_size: 18}));
+        this._separator = new St.Widget({style_class: 'mesale-separator', x_expand: true});
         this._box.add_child(this._list);
+        this._box.add_child(this._separator);
         this._box.add_child(this._entry);
         this.add_child(this._box);
     }
@@ -131,6 +133,7 @@ class CommandBar extends St.Widget {
         this._list.destroy_all_children();
         this._results = search(this._entry.get_text());
         this._results.forEach((result, index) => this._list.add_child(this._createRow(result, index)));
+        this._separator.visible = this._results.length > 0;
         this._select(0);
     }
 
@@ -143,13 +146,28 @@ class CommandBar extends St.Widget {
 
         const content = new St.BoxLayout({x_expand: true, style: 'spacing: 12px;'});
         content.add_child(icon);
-        content.add_child(new St.Label({text: result.title, x_expand: true, y_align: Clutter.ActorAlign.CENTER}));
-        content.add_child(new St.Label({text: result.kind, style_class: 'mesale-kind', y_align: Clutter.ActorAlign.CENTER}));
+        content.add_child(new St.Label({
+            text: result.title, style_class: 'mesale-title', x_expand: true, y_align: Clutter.ActorAlign.CENTER,
+        }));
+        // Apps need no label: their icon says it. Other results name their kind.
+        if (result.kind !== 'App')
+            content.add_child(new St.Label({text: result.kind, style_class: 'mesale-kind', y_align: Clutter.ActorAlign.CENTER}));
+        // Return key hint, shown on the selected row only
+        const key = new St.Label({text: '\u21b5', style_class: 'mesale-key', y_align: Clutter.ActorAlign.CENTER, visible: false});
+        content.add_child(key);
 
         const row = new St.Button({style_class: 'mesale-row', x_expand: true, child: content});
+        row._key = key;
         row.connect('clicked', () => {
             this._selected = index;
             this._activate();
+        });
+        // The pointer moves the selection, so only one row is ever highlighted.
+        // Motion, not hover: a bar opening under a still pointer keeps the first row.
+        row.connect('motion-event', () => {
+            if (this._selected !== index)
+                this._select(index);
+            return Clutter.EVENT_PROPAGATE;
         });
         return row;
     }
@@ -160,10 +178,12 @@ class CommandBar extends St.Widget {
             return;
         this._selected = (index + rows.length) % rows.length;
         rows.forEach((row, i) => {
-            if (i === this._selected)
+            const selected = i === this._selected;
+            if (selected)
                 row.add_style_class_name('selected');
             else
                 row.remove_style_class_name('selected');
+            row._key.visible = selected;
         });
     }
 
