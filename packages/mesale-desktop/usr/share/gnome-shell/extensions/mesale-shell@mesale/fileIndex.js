@@ -2,6 +2,7 @@
 // in the background (never blocking the shell), and browsing a typed path.
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import {normalize} from './parse.js';
 
 const ATTRIBUTES = 'standard::name,standard::type,standard::is-hidden,standard::content-type';
 const MAX_INDEX = 6000;
@@ -13,8 +14,6 @@ let index = [];
 let indexedAt = 0;
 let cancellable = null;
 
-// Lower case without accents, dotless i as i
-export const normalize = text => text.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '').replace(/ı/g, 'i');
 
 function entry(file, info) {
     const folder = info.get_file_type() === Gio.FileType.DIRECTORY;

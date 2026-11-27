@@ -17,10 +17,13 @@
   '';
 
   javascript = runCommand "check-javascript" { nativeBuildInputs = [ nodejs ]; } ''
-    for f in ${../packages/mesale-desktop/usr/share/gnome-shell/extensions}/*/*.js ${../website/static}/*.js; do
+    for f in $(find ${../packages/mesale-desktop/usr/share/gnome-shell/extensions} -name '*.js') ${../website/static}/*.js; do
       cat "$f" >file.mjs
       node --check file.mjs
     done
+    # Command bar: every module loads with GNOME stubbed out, and its parsers give the right answers
+    cd ${../.}
+    node --test tests/commandbar/*.test.mjs
     touch $out
   '';
 

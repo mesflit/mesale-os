@@ -19,7 +19,7 @@ Rules for people and coding agents.
 | Add or change a feature | `packages/mesale-base/usr/lib/mesale/features/<name>` |
 | Add a wallpaper | `artwork/looks.py` and `packages/mesale-live/etc/calamares/modules/packagechooser_look.conf` |
 | Change desktop defaults | `packages/mesale-desktop/etc/dconf/db/local.d/00-mesale` |
-| Change the command bar | `packages/mesale-desktop/usr/share/gnome-shell/extensions/mesale-shell@mesale/` |
+| Change the command bar | `packages/mesale-desktop/usr/share/gnome-shell/extensions/mesale-shell@mesale/`: results in `search/`, text parsing in `parse.js`, shared styles in `stylesheet.css`; tests in `tests/commandbar/` |
 | Change Mesale Center | `packages/mesale-desktop/usr/lib/mesale/center/` |
 | Change Mesale Play (game library) | `packages/mesale-play/usr/lib/mesale/play/`, tests in `tests/play/` |
 | Change the installer | `packages/mesale-live/etc/calamares/` and `usr/lib/calamares/modules/mesale/` |

@@ -4,14 +4,14 @@ import Shell from 'gi://Shell';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {CommandBar} from './commandBar.js';
-import * as Providers from './providers.js';
+import * as Search from './search/index.js';
 import {ThemeManager} from './theme.js';
 
 export default class MesaleShell extends Extension {
     enable() {
         this._skipStartupOverview();
         this._settings = this.getSettings();
-        Providers.start();
+        Search.start();
         this._commandBar = new CommandBar();
         this._theme = new ThemeManager(this._settings, light => this._commandBar.setLight(light));
 
@@ -28,7 +28,7 @@ export default class MesaleShell extends Extension {
         this._theme.destroy();
         this._commandBar.close();
         this._commandBar.destroy();
-        Providers.stop();
+        Search.stop();
         this._theme = this._commandBar = this._settings = null;
     }
 

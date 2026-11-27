@@ -4,7 +4,7 @@ import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import {prepare, search} from './providers.js';
+import {prepare, search} from './search/index.js';
 
 const OFFSET = -84;          // rests just above the bottom bar
 const OFFSET_START = -60;

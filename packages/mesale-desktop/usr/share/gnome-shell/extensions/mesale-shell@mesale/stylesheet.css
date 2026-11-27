@@ -1,3 +1,5 @@
+/* Rules for both styles. stylesheet-dark.css and stylesheet-light.css import this file
+   and add their colours; edit shared rules only here. */
 .mesale-backdrop { background-color: rgba(6,10,24,0.28); }
 .mesale-command { width: 620px; border-radius: 24px; padding: 8px; border-width: 1px; box-shadow: 0 10px 30px rgba(0,0,0,0.30); }
 .mesale-entry { font-size: 16px; border: none; border-radius: 16px; padding: 12px 14px; background-color: transparent; color: inherit; box-shadow: none; caret-color: #5b9cf0; }
