@@ -76,9 +76,16 @@ case "$command" in
   add | remove) [ $# -gt 0 ] || usage ;;
   *) usage ;;
 esac
+# Pasted commands can carry invisible characters (non-breaking spaces, CR): drop them.
+names=()
 for n in "$@"; do
-  [[ "$n" =~ ^[a-z0-9-]+$ && -f "$FEATURES/$n" ]] || { echo "Unknown feature: $n" >&2; exit 1; }
+  n=$(printf '%s' "$n" | LC_ALL=C tr 'A-Z' 'a-z' | LC_ALL=C tr -cd 'a-z0-9-')
+  [ -n "$n" ] || continue
+  [ -f "$FEATURES/$n" ] || { echo "Unknown feature: $n (see: mesale-feature list)" >&2; exit 1; }
+  names+=("$n")
 done
+[ ${#names[@]} -gt 0 ] || usage
+set -- "${names[@]}"
 [ "$(id -u)" -eq 0 ] || exec sudo "$0" "$command" "$@"
 export DEBIAN_FRONTEND=noninteractive
 for n in "$@"; do "$command" "$n"; done
