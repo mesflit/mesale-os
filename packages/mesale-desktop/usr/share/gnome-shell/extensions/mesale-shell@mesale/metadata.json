@@ -1,2 +1,2 @@
 { "uuid": "mesale-shell@mesale", "name": "Mesale Shell", "description": "Command bar, colors, automatic theme",
-  "shell-version": ["50", "51"], "settings-schema": "org.mesale.shell", "version": 3 }
+  "shell-version": ["50", "51"], "settings-schema": "org.mesale.shell", "version": 4 }

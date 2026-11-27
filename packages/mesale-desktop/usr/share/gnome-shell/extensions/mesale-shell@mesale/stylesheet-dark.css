@@ -10,6 +10,8 @@
 .mesale-row.selected { background-color: rgba(70,140,235,0.24); }
 .mesale-title { font-size: 15px; }
 .mesale-kind { font-size: 12px; color: rgba(140,160,200,0.95); }
+.mesale-subtitle { font-size: 12px; color: rgba(140,160,200,0.95); }
+.mesale-hints { font-size: 11px; padding: 0 12px 6px 12px; color: rgba(140,160,200,0.85); }
 .mesale-key { font-size: 12px; font-weight: bold; padding: 2px 8px; border-radius: 8px; background-color: rgba(70,140,235,0.28); }
 .popup-menu-content, .candidate-popup-content { border-radius: 22px; }
 .quick-settings { border-radius: 26px; padding: 18px; }

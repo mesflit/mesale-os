@@ -4,7 +4,7 @@ import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import {search} from './providers.js';
+import {prepare, search} from './providers.js';
 
 const OFFSET = -84;          // rests just above the bottom bar
 const OFFSET_START = -60;
@@ -38,13 +38,20 @@ class CommandBar extends St.Widget {
         });
         this._list = new St.BoxLayout({style_class: 'mesale-list', orientation: Clutter.Orientation.VERTICAL});
         this._entry = new St.Entry({
-            style_class: 'mesale-entry', hint_text: 'Search, open, calculate\u2026', can_focus: true, x_expand: true,
+            style_class: 'mesale-entry', hint_text: 'Search apps, files, settings, or calculate\u2026',
+            can_focus: true, x_expand: true,
         });
         this._entry.set_primary_icon(new St.Icon({icon_name: 'system-search-symbolic', icon_size: 18}));
         this._separator = new St.Widget({style_class: 'mesale-separator', x_expand: true});
         this._box.add_child(this._list);
         this._box.add_child(this._separator);
         this._box.add_child(this._entry);
+        // Shown while the entry is empty: what the prefixes do
+        this._hints = new St.Label({
+            style_class: 'mesale-hints', x_align: Clutter.ActorAlign.CENTER,
+            text: '>  run    ?  web    :  emoji    @  clipboard    /  ~  files    Ctrl+\u21b5  more',
+        });
+        this._box.add_child(this._hints);
         this.add_child(this._box);
     }
 
@@ -93,6 +100,11 @@ class CommandBar extends St.Widget {
         this._entry.set_text('');
         this._refresh();
         this._entry.grab_key_focus();
+        // The file index is rebuilt in the background; show its results once ready
+        prepare(() => {
+            if (this.visible && this._entry.get_text())
+                this._refresh();
+        });
 
         this.opacity = 0;
         this._box.translation_y = OFFSET_START;
@@ -110,6 +122,14 @@ class CommandBar extends St.Widget {
 
     _onKey(event) {
         switch (event.get_key_symbol()) {
+        case Clutter.KEY_Return:
+        case Clutter.KEY_KP_Enter:
+        case Clutter.KEY_ISO_Enter:
+            if (event.get_state() & Clutter.ModifierType.CONTROL_MASK) {
+                this._activate(true);
+                return Clutter.EVENT_STOP;
+            }
+            return Clutter.EVENT_PROPAGATE;
         case Clutter.KEY_Escape:
             this.close();
             return Clutter.EVENT_STOP;
@@ -132,9 +152,11 @@ class CommandBar extends St.Widget {
 
     _refresh() {
         this._list.destroy_all_children();
-        this._results = search(this._entry.get_text());
+        const text = this._entry.get_text();
+        this._results = search(text);
         this._results.forEach((result, index) => this._list.add_child(this._createRow(result, index)));
         this._separator.visible = this._results.length > 0;
+        this._hints.visible = text === '';
         this._select(0);
     }
 
@@ -147,11 +169,14 @@ class CommandBar extends St.Widget {
 
         const content = new St.BoxLayout({x_expand: true, style: 'spacing: 12px;'});
         content.add_child(icon);
-        content.add_child(new St.Label({
-            text: result.title, style_class: 'mesale-title', x_expand: true, y_align: Clutter.ActorAlign.CENTER,
-        }));
+        const text = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL, x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER});
+        text.add_child(new St.Label({text: result.title, style_class: 'mesale-title'}));
+        if (result.subtitle)
+            text.add_child(new St.Label({text: result.subtitle, style_class: 'mesale-subtitle'}));
+        content.add_child(text);
         // Apps need no label: their icon says it. Other results name their kind.
-        if (result.kind !== 'App')
+        if (result.kind && result.kind !== 'App')
             content.add_child(new St.Label({text: result.kind, style_class: 'mesale-kind', y_align: Clutter.ActorAlign.CENTER}));
         // Return key hint, shown on the selected row only
         const key = new St.Label({text: '\u21b5', style_class: 'mesale-key', y_align: Clutter.ActorAlign.CENTER, visible: false});
@@ -188,9 +213,21 @@ class CommandBar extends St.Widget {
         });
     }
 
-    _activate() {
+    _activate(alternative = false) {
         const result = this._results[this._selected];
+        if (!result)
+            return;
+        // A folder while browsing: go inside instead of opening it
+        if (result.fill !== undefined && !alternative) {
+            this._entry.set_text(result.fill);
+            this._entry.clutter_text.set_cursor_position(-1);
+            return;
+        }
         this.close();
-        result?.run();
+        try {
+            (alternative && result.alt ? result.alt : result.run)();
+        } catch (e) {
+            logError(e, 'Mesale command bar');
+        }
     }
 });
