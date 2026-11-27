@@ -116,5 +116,8 @@ def run():
         ch("apt-get", "-y", "autoremove", "--purge")
     user = gs.value("username")
     if "fish" in todo and "fish" not in failed and user: ch("usermod", "-s", "/usr/bin/fish", user)
+    # The image's own package repository served the features above. Updates come from
+    # mesale.sources, so the installed system does not keep it.
+    ch("rm", "-rf", "/usr/share/mesale/repo", "/etc/apt/sources.list.d/mesale-local.list")
     ch("apt-get", "clean")
     return None
