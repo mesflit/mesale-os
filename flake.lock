@@ -16,9 +16,30 @@
         "type": "github"
       }
     },
+    "play": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795876487,
+        "narHash": "sha256-DxSlOzAoWfVhMfqVeuP1mQAeVefgLuTwmQeJxSz/sAg=",
+        "owner": "mesflit",
+        "repo": "mesale-play",
+        "rev": "141ea3ed38b2e07095f1160b3a776f01f5da9215",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mesflit",
+        "repo": "mesale-play",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "play": "play"
       }
     }
   },

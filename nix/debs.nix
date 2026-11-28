@@ -8,6 +8,7 @@
   apt,
   shellcheck,
   artwork,
+  play,
   buildId,
 }:
 let
@@ -29,6 +30,7 @@ let
   extra = {
     mesale-base = "${artwork} ${../vendor}";
     mesale-nitro = "${linuwu-sense} ${../vendor/linuwu-sense-nitro-key.patch}";
+    mesale-play = "${play}";
   };
   source =
     name:
@@ -53,6 +55,7 @@ runCommand "mesale-repo"
 
     # Generated and third-party files
     cp -r --no-preserve=all ${artwork}/. pkg/mesale-base/
+    cp -r --no-preserve=all ${play}/. pkg/mesale-play/   # from mesflit/mesale-play
     install -Dm644 ${../vendor/flathub.flatpakrepo} pkg/mesale-base/etc/flatpak/remotes.d/flathub.flatpakrepo
     install -Dm644 ${../vendor/nvidia-cuda.asc} pkg/mesale-base/usr/share/mesale/nvidia-cuda.asc
     # Updates need the archive key (nix run .#create-signing-key)

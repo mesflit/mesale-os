@@ -21,7 +21,7 @@ Rules for people and coding agents.
 | Change desktop defaults | `packages/mesale-desktop/etc/dconf/db/local.d/00-mesale` |
 | Change the command bar | `packages/mesale-desktop/usr/share/gnome-shell/extensions/mesale-shell@mesale/`: results in `search/`, text parsing in `parse.js`, shared styles in `stylesheet.css`; tests in `tests/commandbar/` |
 | Change Mesale Center | `packages/mesale-desktop/usr/lib/mesale/center/` |
-| Change Mesale Play (game library) | `packages/mesale-play/usr/lib/mesale/play/`, tests in `tests/play/` |
+| Change Mesale Play (game library) | Its own repository, [mesflit/mesale-play](https://github.com/mesflit/mesale-play). Here only `packages/mesale-play/DEBIAN/control`; take a new version with `nix flake update play` |
 | Change the installer | `packages/mesale-live/etc/calamares/` and `usr/lib/calamares/modules/mesale/` |
 | Change what is on the ISO | `config/packages.sh` |
 | Bump the version | `config/mesale.conf` (each release is named after a celestial body) |

@@ -2,9 +2,14 @@
   description = "Mesale OS: Debian base, newest kernel, drivers and GNOME";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+  # Mesale Play, the game library, lives in its own repository
+  inputs.play = {
+    url = "github:mesflit/mesale-play";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   outputs =
-    { self, nixpkgs }:
+    { self, nixpkgs, play }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -13,6 +18,7 @@
       artwork = pkgs.callPackage ./nix/artwork.nix { };
       debs = pkgs.callPackage ./nix/debs.nix {
         inherit artwork;
+        play = play.packages.${system}.tree;
         buildId = self.lastModifiedDate or "19700101000000";
       };
       website = pkgs.callPackage ./nix/website.nix { inherit artwork; };

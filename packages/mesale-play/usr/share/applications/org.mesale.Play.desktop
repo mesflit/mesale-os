@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Mesale Play
-Comment=All your games in one place, made for gamepads
-Exec=python3 /usr/lib/mesale/play/main.py
-Icon=org.mesale.Play
-Categories=Game;
-Keywords=games;steam;heroic;lutris;gamepad;controller;oyun;
-StartupWMClass=org.mesale.Play

@@ -32,7 +32,6 @@
     for f in $(find . -name '*.py') packages/mesale-live/usr/lib/mesale/installer-options; do
       python3 -c 'import ast, sys; ast.parse(open(sys.argv[1]).read())' "$f"
     done
-    HOME=$TMPDIR python3 -m unittest discover -s tests/play
     touch $out
   '';
 }
