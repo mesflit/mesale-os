@@ -18,7 +18,7 @@ BUTTONS = [(":minimize,maximize,close", "Right, all three"), (":close", "Right, 
            ("close,minimize,maximize:", "Left, all three"), ("close:", "Left, close only")]
 # Shortcuts Mesale sets up, shown so they can be found
 SHORTCUTS_LIST = [
-    ("Super+Q", "Close the window"),
+    ("Super+Q", "Close the window (the only close shortcut)"),
     ("Super+F", "Fullscreen"),
     ("Super+1 … 9", "Go to a workspace"),
     ("Super+Shift+1 … 9", "Move the window to a workspace"),

@@ -29,7 +29,7 @@ titlebar-font='Inter Semi-Bold 11'
 [org/gnome/desktop/wm/keybindings]
 switch-input-source=['<Shift><Super>space']
 switch-input-source-backward=['<Control><Super>space']
-close=['<Super>q','<Super>w','<Alt>F4']
+close=['<Super>q']
 toggle-fullscreen=['<Super>f']
 switch-windows=['<Alt>Tab']
 switch-applications=['<Super>Tab']
