@@ -26,7 +26,10 @@ let
   # reproducible (the wallpapers are rendered anew), so publishing compares this field
   # and keeps the published package when it is the same (tools/sign-repo.sh).
   # Only what goes into each package counts: new wallpapers update mesale-base alone.
-  shared = "${./debs.nix} ${version} ${codename}";
+  # Raise recipe only when a change to this file changes what goes into every package;
+  # editing this file otherwise (comments, a new package) republishes nothing else.
+  recipe = "1";
+  shared = "${recipe} ${version} ${codename}";
   extra = {
     mesale-base = "${artwork} ${../vendor}";
     mesale-nitro = "${linuwu-sense} ${../vendor/linuwu-sense-nitro-key.patch}";

@@ -47,7 +47,7 @@ after() { ...; }         # optional: after apt
 
 ## Updates
 
-Every push that touches `packages/` publishes a signed apt repository at `https://mesflit.github.io/mesaleos/apt/`. Installed systems get it through `mesale.sources`. Versions come from the commit date, so they always increase.
+Every push that touches `packages/` publishes a signed apt repository at `https://mesflit.github.io/mesaleos/apt/`. Installed systems get it through `mesale.sources`. Versions come from the commit date, so they always increase. Only packages whose inputs changed get a new version (`X-Mesale-Source` in `nix/debs.nix`); raise `recipe` there when a build change alters every package.
 
 The maintainer creates the key once with `nix run .#create-signing-key`. The private key lives only in the `APT_SIGNING_KEY` secret. Do not delete that secret: installed systems would stop getting updates. Never commit it, and never create or replace it without being asked. Without a key, builds work and simply have no update source.
 
