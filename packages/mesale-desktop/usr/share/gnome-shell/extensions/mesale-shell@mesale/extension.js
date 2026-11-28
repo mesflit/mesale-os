@@ -6,12 +6,14 @@ import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {CommandBar} from './commandBar.js';
 import * as Search from './search/index.js';
 import {ThemeManager} from './theme.js';
+import * as Migrate from './migrate.js';
 import * as Workspaces from './workspaces.js';
 
 export default class MesaleShell extends Extension {
     enable() {
         this._skipStartupOverview();
         this._settings = this.getSettings();
+        Migrate.run(this._settings);
         Search.start(this._settings);
         this._commandBar = new CommandBar();
         this._theme = new ThemeManager(this._settings, light => this._commandBar.setLight(light));

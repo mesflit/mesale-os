@@ -100,3 +100,20 @@ test('sunrise and sunset from the time zone', async () => {
     assert.equal(isDaytime(new Date(Date.UTC(2026, 5, 21, 23)), 69.65, 18.96), true);
     assert.equal(isDaytime(new Date(Date.UTC(2026, 11, 21, 11)), 69.65, 18.96), false);
 });
+
+test('one-time settings steps run once', async () => {
+    const {run} = await load('migrate.js');
+    const store = {steps: 0, writes: 0};
+    const settings = {
+        get_int: () => store.steps,
+        set_int: (_key, value) => {
+            store.steps = value;
+            store.writes++;
+        },
+    };
+    run(settings);
+    assert.ok(store.steps >= 1, 'steps recorded');
+    const after = store.writes;
+    run(settings);
+    assert.equal(store.writes, after, 'nothing runs or is written the second time');
+});
