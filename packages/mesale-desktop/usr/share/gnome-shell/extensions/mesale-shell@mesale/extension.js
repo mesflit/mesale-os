@@ -4,6 +4,7 @@ import Shell from 'gi://Shell';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {CommandBar} from './commandBar.js';
+import {GreeterSync} from './greeter.js';
 import * as Search from './search/index.js';
 import {ThemeManager} from './theme.js';
 import * as Migrate from './migrate.js';
@@ -21,11 +22,14 @@ export default class MesaleShell extends Extension {
         Main.wm.addKeybinding('command-bar', this._settings, Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW, () => this._commandBar.toggle());
         Workspaces.enable(this._settings);
+        this._greeter = new GreeterSync(this._settings);
     }
 
     disable() {
         Main.wm.removeKeybinding('command-bar');
         Workspaces.disable();
+        this._greeter.destroy();
+        this._greeter = null;
         Main.layoutManager.disconnectObject(this);
         if (this._overviewTimer)
             GLib.source_remove(this._overviewTimer);

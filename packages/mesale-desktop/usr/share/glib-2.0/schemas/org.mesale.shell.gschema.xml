@@ -29,5 +29,6 @@
     <key name="workspace-9" type="as"><default><![CDATA[['<Super>9']]]></default><summary>Go to workspace 9</summary></key>
     <key name="move-to-workspace-9" type="as"><default><![CDATA[['<Super><Shift>9']]]></default><summary>Move the window to workspace 9</summary></key>
     <key name="settings-steps" type="i"><default>0</default><summary>How many one-time settings steps (migrate.js) have run</summary></key>
+    <key name="greeter-source" type="s"><default>''</default><summary>The wallpaper the login screen picture was last made from</summary></key>
   </schema>
 </schemalist>

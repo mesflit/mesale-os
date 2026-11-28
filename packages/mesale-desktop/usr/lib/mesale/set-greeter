@@ -1,0 +1,23 @@
+#!/bin/sh
+# Sets the login screen background from a JPEG on standard input. Mesale Shell runs it
+# through pkexec when the wallpaper changes. It takes bytes, never a path, so it cannot
+# be used to read files as root, and it never decodes the picture itself.
+set -eu
+dir=${GREETER_DIR:-/var/lib/mesale}   # pkexec clears the environment: always the default there
+max=8388608
+mkdir -p "$dir"
+tmp=$(mktemp "$dir/greeter.XXXXXX")
+trap 'rm -f "$tmp"' EXIT
+head -c $((max + 1)) >"$tmp"
+size=$(stat -c %s "$tmp")
+if [ "$size" -lt 1024 ] || [ "$size" -gt "$max" ]; then
+  echo "set-greeter: not a picture of a usable size" >&2
+  exit 1
+fi
+if [ "$(head -c 3 "$tmp" | od -An -tx1 | tr -d ' \n')" != "ffd8ff" ]; then
+  echo "set-greeter: not a JPEG" >&2
+  exit 1
+fi
+chmod 644 "$tmp"
+mv "$tmp" "$dir/greeter.jpg"
+trap - EXIT

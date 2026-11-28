@@ -1,0 +1,58 @@
+#!/usr/bin/python3
+"""Writes the login screen picture for a wallpaper to standard output: a blurred
+1920x1080 JPEG. Runs as the user; /usr/lib/mesale/set-greeter puts it in place.
+
+usage: make-greeter WALLPAPER-URI
+"""
+import os
+import sys
+
+import gi
+
+gi.require_version("GdkPixbuf", "2.0")
+from gi.repository import GdkPixbuf, Gio  # noqa: E402
+
+WIDTH, HEIGHT = 1920, 1080
+OURS = "/usr/share/backgrounds/mesale/"
+READY = "/usr/share/mesale/greeter/"
+BLUR = 10   # the picture is shrunk this much and grown back: a soft, cheap blur
+
+
+def ready_made(path):
+    """Mesale's own wallpapers come with a login screen picture made at build time."""
+    if path.startswith(OURS):
+        name = os.path.splitext(os.path.basename(path))[0] + ".jpg"
+        if os.path.exists(READY + name):
+            with open(READY + name, "rb") as f:
+                return f.read()
+    return None
+
+
+def blurred(path):
+    info, width, height = GdkPixbuf.Pixbuf.get_file_info(path)
+    if not info:
+        raise ValueError("not a picture")
+    scale = max(WIDTH / width, HEIGHT / height)   # cover the screen, then cut the middle
+    picture = GdkPixbuf.Pixbuf.new_from_file_at_scale(path, max(WIDTH, round(width * scale)),
+                                                      max(HEIGHT, round(height * scale)), False)
+    x, y = (picture.get_width() - WIDTH) // 2, (picture.get_height() - HEIGHT) // 2
+    picture = picture.new_subpixbuf(x, y, WIDTH, HEIGHT)
+    small = picture.scale_simple(WIDTH // BLUR, HEIGHT // BLUR, GdkPixbuf.InterpType.HYPER)
+    picture = small.scale_simple(WIDTH, HEIGHT, GdkPixbuf.InterpType.BILINEAR)
+    ok, data = picture.save_to_bufferv("jpeg", ["quality"], ["90"])
+    if not ok:
+        raise ValueError("could not save")
+    return data
+
+
+def main():
+    if len(sys.argv) != 2:
+        sys.exit(__doc__)
+    path = Gio.File.new_for_uri(sys.argv[1]).get_path()
+    if not path or not os.path.exists(path):
+        sys.exit(f"make-greeter: no such wallpaper: {sys.argv[1]}")
+    sys.stdout.buffer.write(ready_made(path) or blurred(path))
+
+
+if __name__ == "__main__":
+    main()

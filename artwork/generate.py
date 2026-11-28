@@ -42,12 +42,15 @@ def wallpapers():
         image = RENDER[look.style](look, (WIDTH, WIDTH * 9 // 16))   # drawn at full size, not upscaled
         image.save(folder / f"{key}.jpg", quality=93, subsampling=0)
         image.resize((640, 360), Image.LANCZOS).save(previews / f"{key}.png")
+        # Login screen: already blurred, so it costs nothing to draw. One per look, so the
+        # login screen can follow the wallpaper (/usr/lib/mesale/make-greeter).
+        greeter = image.resize((1920, 1080), Image.LANCZOS).filter(ImageFilter.GaussianBlur(14))
+        (SHARE / "mesale/greeter").mkdir(parents=True, exist_ok=True)
+        greeter.save(SHARE / f"mesale/greeter/{key}.jpg", quality=92)
         if key == "night":
             dimmed = image.resize((1920, 1080), Image.LANCZOS).point(lambda p: int(p * .55))
             dimmed.save(SHARE / "mesale/grub.png")
-            # Login screen: already blurred, so it costs nothing to draw
-            greeter = image.resize((1920, 1080), Image.LANCZOS).filter(ImageFilter.GaussianBlur(14))
-            greeter.save(SHARE / "mesale/greeter.jpg", quality=92)
+            greeter.save(SHARE / "mesale/greeter.jpg", quality=92)   # until a user picks a wallpaper
         entries.append(
             f'<wallpaper deleted="false"><name>{look.name}</name>'
             f'<filename>/usr/share/backgrounds/mesale/{key}.jpg</filename><options>zoom</options>'

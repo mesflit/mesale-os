@@ -4,3 +4,6 @@ dconf update
 # Boot splash and GRUB background
 [ -x /usr/sbin/plymouth-set-default-theme ] && plymouth-set-default-theme mesale || true
 update-alternatives --install /usr/share/images/desktop-base/desktop-grub.png desktop-grub /usr/share/mesale/grub.png 90 2>/dev/null || true
+# Login screen background: follows the wallpaper (set-greeter); Mesale's until then
+mkdir -p /var/lib/mesale
+[ -e /var/lib/mesale/greeter.jpg ] || cp /usr/share/mesale/greeter.jpg /var/lib/mesale/greeter.jpg 2>/dev/null || true

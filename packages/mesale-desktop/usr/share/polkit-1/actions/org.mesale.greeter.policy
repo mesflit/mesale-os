@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+  <vendor>Mesale OS</vendor>
+  <action id="org.mesale.set-greeter">
+    <description>Change the login screen background</description>
+    <message>The login screen follows your wallpaper</message>
+    <!-- Only a picture for the login screen: the person at the computer needs no password -->
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>yes</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/lib/mesale/set-greeter</annotate>
+  </action>
+</policyconfig>
