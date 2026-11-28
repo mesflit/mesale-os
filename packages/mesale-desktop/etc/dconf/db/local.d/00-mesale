@@ -29,9 +29,22 @@ titlebar-font='Inter Semi-Bold 11'
 [org/gnome/desktop/wm/keybindings]
 switch-input-source=['<Shift><Super>space']
 switch-input-source-backward=['<Control><Super>space']
-close=['<Super>w','<Alt>F4']
+close=['<Super>q','<Super>w','<Alt>F4']
+toggle-fullscreen=['<Super>f']
 switch-windows=['<Alt>Tab']
 switch-applications=['<Super>Tab']
+
+# Super+1..9 and Super+Shift+1..9 are workspaces (the Mesale Shell extension), not apps
+[org/gnome/shell/keybindings]
+switch-to-application-1=@as []
+switch-to-application-2=@as []
+switch-to-application-3=@as []
+switch-to-application-4=@as []
+switch-to-application-5=@as []
+switch-to-application-6=@as []
+switch-to-application-7=@as []
+switch-to-application-8=@as []
+switch-to-application-9=@as []
 
 [org/gnome/settings-daemon/plugins/media-keys]
 custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/nitro/']
@@ -113,7 +126,7 @@ appicon-padding=6
 animate-appicon-hover=true
 show-apps-icon-file='/usr/share/icons/hicolor/scalable/apps/mesale-flame.svg'
 show-apps-icon-side-padding=10
-hot-keys=true
+hot-keys=false
 hide-overview-on-startup=true
 extension-version=9999
 stockgs-keep-dash=false

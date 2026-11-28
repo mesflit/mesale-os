@@ -10,5 +10,23 @@
     <key name="search-files" type="b"><default>true</default><summary>Show files in command bar results</summary></key>
     <key name="search-web" type="b"><default>true</default><summary>Offer a web search when nothing else matches</summary></key>
     <key name="clipboard-history" type="b"><default>true</default><summary>Keep copied text in memory for the @ prefix</summary></key>
+    <key name="workspace-1" type="as"><default><![CDATA[['<Super>1']]]></default><summary>Go to workspace 1</summary></key>
+    <key name="move-to-workspace-1" type="as"><default><![CDATA[['<Super><Shift>1']]]></default><summary>Move the window to workspace 1</summary></key>
+    <key name="workspace-2" type="as"><default><![CDATA[['<Super>2']]]></default><summary>Go to workspace 2</summary></key>
+    <key name="move-to-workspace-2" type="as"><default><![CDATA[['<Super><Shift>2']]]></default><summary>Move the window to workspace 2</summary></key>
+    <key name="workspace-3" type="as"><default><![CDATA[['<Super>3']]]></default><summary>Go to workspace 3</summary></key>
+    <key name="move-to-workspace-3" type="as"><default><![CDATA[['<Super><Shift>3']]]></default><summary>Move the window to workspace 3</summary></key>
+    <key name="workspace-4" type="as"><default><![CDATA[['<Super>4']]]></default><summary>Go to workspace 4</summary></key>
+    <key name="move-to-workspace-4" type="as"><default><![CDATA[['<Super><Shift>4']]]></default><summary>Move the window to workspace 4</summary></key>
+    <key name="workspace-5" type="as"><default><![CDATA[['<Super>5']]]></default><summary>Go to workspace 5</summary></key>
+    <key name="move-to-workspace-5" type="as"><default><![CDATA[['<Super><Shift>5']]]></default><summary>Move the window to workspace 5</summary></key>
+    <key name="workspace-6" type="as"><default><![CDATA[['<Super>6']]]></default><summary>Go to workspace 6</summary></key>
+    <key name="move-to-workspace-6" type="as"><default><![CDATA[['<Super><Shift>6']]]></default><summary>Move the window to workspace 6</summary></key>
+    <key name="workspace-7" type="as"><default><![CDATA[['<Super>7']]]></default><summary>Go to workspace 7</summary></key>
+    <key name="move-to-workspace-7" type="as"><default><![CDATA[['<Super><Shift>7']]]></default><summary>Move the window to workspace 7</summary></key>
+    <key name="workspace-8" type="as"><default><![CDATA[['<Super>8']]]></default><summary>Go to workspace 8</summary></key>
+    <key name="move-to-workspace-8" type="as"><default><![CDATA[['<Super><Shift>8']]]></default><summary>Move the window to workspace 8</summary></key>
+    <key name="workspace-9" type="as"><default><![CDATA[['<Super>9']]]></default><summary>Go to workspace 9</summary></key>
+    <key name="move-to-workspace-9" type="as"><default><![CDATA[['<Super><Shift>9']]]></default><summary>Move the window to workspace 9</summary></key>
   </schema>
 </schemalist>

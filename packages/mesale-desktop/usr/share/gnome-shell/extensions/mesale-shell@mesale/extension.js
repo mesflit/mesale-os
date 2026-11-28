@@ -6,6 +6,7 @@ import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {CommandBar} from './commandBar.js';
 import * as Search from './search/index.js';
 import {ThemeManager} from './theme.js';
+import * as Workspaces from './workspaces.js';
 
 export default class MesaleShell extends Extension {
     enable() {
@@ -17,10 +18,12 @@ export default class MesaleShell extends Extension {
 
         Main.wm.addKeybinding('command-bar', this._settings, Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW, () => this._commandBar.toggle());
+        Workspaces.enable(this._settings);
     }
 
     disable() {
         Main.wm.removeKeybinding('command-bar');
+        Workspaces.disable();
         Main.layoutManager.disconnectObject(this);
         if (this._overviewTimer)
             GLib.source_remove(this._overviewTimer);

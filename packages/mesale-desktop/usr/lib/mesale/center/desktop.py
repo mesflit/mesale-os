@@ -2,10 +2,10 @@
 import json
 import re
 
-from gi.repository import Adw, Gio
+from gi.repository import Adw, Gtk
 
 import panel
-from widgets import choice, group, has_key, settings, slider, string_choice, switch
+from widgets import choice, group, has_key, link, settings, slider, spawn, string_choice, switch
 
 MONITORS = range(4)
 TILING = "tiling-assistant@leleat-on-github"
@@ -16,6 +16,14 @@ ENGINES = [("duckduckgo", "DuckDuckGo"), ("google", "Google"), ("startpage", "St
            ("brave", "Brave Search"), ("ecosia", "Ecosia")]
 BUTTONS = [(":minimize,maximize,close", "Right, all three"), (":close", "Right, close only"),
            ("close,minimize,maximize:", "Left, all three"), ("close:", "Left, close only")]
+# Shortcuts Mesale sets up, shown so they can be found
+SHORTCUTS_LIST = [
+    ("Super+Q", "Close the window"),
+    ("Super+F", "Fullscreen"),
+    ("Super+1 … 9", "Go to a workspace"),
+    ("Super+Shift+1 … 9", "Move the window to a workspace"),
+    ("Super+Return", "Terminal"),
+]
 WORKSPACES = [(0, "As many as needed"), (1, "One"), (2, "Two"), (3, "Three"), (4, "Four"), (6, "Six")]
 
 
@@ -36,7 +44,7 @@ class DesktopPage(Adw.PreferencesPage):
         self.gnome_shell = settings("org.gnome.shell")
         self.mutter = settings("org.gnome.mutter")
         self.wm = settings("org.gnome.desktop.wm.preferences")
-        for build in (self.bar_group, self.clock_group, self.command_group, self.windows_group):
+        for build in (self.bar_group, self.clock_group, self.command_group, self.windows_group, self.shortcuts_group):
             box = build()
             if box:
                 self.add(box)
@@ -168,3 +176,14 @@ class DesktopPage(Adw.PreferencesPage):
         self.mutter.set_boolean("dynamic-workspaces", count == 0)
         if count:
             self.wm.set_int("num-workspaces", count)
+
+    # Shortcuts --------------------------------------------------------------------
+
+    def shortcuts_group(self):
+        rows = []
+        for keys, what in SHORTCUTS_LIST:
+            row = Adw.ActionRow(title=what)
+            row.add_suffix(Gtk.Label(label=keys, css_classes=["dim-label", "monospace"]))
+            rows.append(row)
+        rows.append(link("All shortcuts", "In Settings, Keyboard", lambda: spawn(["gnome-control-center", "keyboard"])))
+        return group("Shortcuts", rows, description="The command bar shortcut is set above")
