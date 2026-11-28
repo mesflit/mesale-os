@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="MAME"
+DESC="Arcade machine emulator"
+NET=1
+FLATPAKS="org.mamedev.MAME"

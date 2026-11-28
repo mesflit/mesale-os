@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="DOSBox Staging"
+DESC="DOS games"
+NET=1
+FLATPAKS="io.github.dosbox-staging"

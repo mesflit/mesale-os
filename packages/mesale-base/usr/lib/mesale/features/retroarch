@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="RetroArch"
+DESC="Many classic consoles in one emulator, with downloadable cores"
+NET=1
+FLATPAKS="org.libretro.RetroArch"

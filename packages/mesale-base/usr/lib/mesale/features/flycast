@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="Flycast"
+DESC="Dreamcast emulator"
+NET=1
+FLATPAKS="org.flycast.Flycast"

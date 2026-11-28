@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="PPSSPP"
+DESC="PSP emulator"
+NET=1
+FLATPAKS="org.ppsspp.PPSSPP"

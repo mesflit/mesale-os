@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="RPCS3"
+DESC="PlayStation 3 emulator"
+NET=1
+FLATPAKS="net.rpcs3.RPCS3"

@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="mGBA"
+DESC="Game Boy and Game Boy Advance emulator"
+NET=1
+FLATPAKS="io.mgba.mGBA"

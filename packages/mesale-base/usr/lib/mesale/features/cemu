@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="Cemu"
+DESC="Wii U emulator"
+NET=1
+FLATPAKS="info.cemu.Cemu"

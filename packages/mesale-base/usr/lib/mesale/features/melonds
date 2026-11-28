@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="melonDS"
+DESC="Nintendo DS emulator"
+NET=1
+FLATPAKS="net.kuribo64.melonDS"

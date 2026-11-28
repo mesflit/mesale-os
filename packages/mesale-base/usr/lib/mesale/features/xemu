@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="xemu"
+DESC="Original Xbox emulator"
+NET=1
+FLATPAKS="app.xemu.xemu"

@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="Ryujinx"
+DESC="Nintendo Switch emulator (Ryubing)"
+NET=1
+FLATPAKS="io.github.ryubing.Ryujinx"

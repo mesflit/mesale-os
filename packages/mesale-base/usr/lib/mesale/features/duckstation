@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="DuckStation"
+DESC="PlayStation emulator"
+NET=1
+FLATPAKS="org.duckstation.DuckStation"

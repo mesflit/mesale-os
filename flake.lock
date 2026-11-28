@@ -23,11 +23,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795877334,
-        "narHash": "sha256-fRW8kreF2/ZsPXsDrriJt8xz+Kc9GIpwiTfn36Z8Bio=",
+        "lastModified": 1795877993,
+        "narHash": "sha256-jDZ4J0pUEE5cyoEMZyaq4LzqLyF9w0RDSkenQ09MDLA=",
         "owner": "mesflit",
         "repo": "mesale-play",
-        "rev": "66783d7a0776c43e8e41bea5b3bdf6fa3d3eb9cf",
+        "rev": "ba5155b6d136b23307d7f5311fca307952a02eb4",
         "type": "github"
       },
       "original": {

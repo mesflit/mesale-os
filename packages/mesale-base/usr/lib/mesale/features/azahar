@@ -1,0 +1,5 @@
+GROUP=gaming
+NAME="Azahar"
+DESC="Nintendo 3DS emulator"
+NET=1
+FLATPAKS="org.azahar_emu.Azahar"
