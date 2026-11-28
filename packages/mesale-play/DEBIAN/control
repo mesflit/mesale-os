@@ -4,7 +4,7 @@ Architecture: all
 Maintainer: Mesale OS <mesale@localhost>
 Section: games
 Priority: optional
-Depends: python3, python3-gi, gir1.2-gtk-4.0, gir1.2-adw-1, gir1.2-manette-0.2
-Description: Mesale Play: installed Steam, Heroic and Lutris games in one fullscreen library
+Depends: python3, python3-gi, python3-yaml, gir1.2-gtk-4.0, gir1.2-adw-1, gir1.2-manette-0.2
+Description: Mesale Play: every game you have in one fullscreen library
  Reads each launcher's local files (no accounts) and starts games through it.
  Works with gamepads (libmanette) and the keyboard.

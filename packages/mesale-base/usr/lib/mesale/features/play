@@ -1,5 +1,5 @@
 GROUP=gaming
 NAME="Mesale Play"
-DESC="Your Steam, Heroic and Lutris games in one fullscreen library for gamepads"
+DESC="Steam, Heroic, Lutris, Minecraft, RetroArch and more in one fullscreen library for gamepads"
 NET=1
 PKGS="mesale-play"
